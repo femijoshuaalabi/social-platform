@@ -12,7 +12,7 @@ body {
     background-color: #fbfbfb !important;
 }
 .background-fixer {
-    background: rgba(25, 107, 105,0.2);
+	background: rgba(25, 107, 105,0.2);
     height: 100vh;
     width: 100vw;
     position: fixed;
@@ -27,7 +27,149 @@ select {
 	display: block !important;
 }
 
+p {
+	font-size: 1rem !important;
+	font-weight: 400 !important
+}
+
 .md-form.md-outline label {
 	color: #000 !important;
 	font-weight: 300 !important;
+}
+.progress-bar {
+	background: rgb(25, 107, 105) !important;
+}
+
+
+/************************************************************************
+*************************************************************************
+					BODY STUCTURING STYTING
+*************************************************************************
+************************************************************************/
+.header{
+    padding-left: 280px !important;
+    padding-right: 280px !important;
+    height: 60px !important;
+}
+
+.sidebar {
+	height: 100vh !important;
+    padding: 0px !important;
+    top: 0px !important;
+    background: transparent !important;
+    z-index: 11000000 !important;
+}
+
+.sidebar-menu-list li{
+	cursor: pointer;
+    padding: 0px 10px;
+}
+
+.sidebar-menu-list li a{
+	font-size: 1.2rem;
+    font-weight: 500;
+}
+
+.sidebar-right {
+	height: 100vh;
+    padding: 0px !important;
+    right: 0px;
+    position: fixed;
+    width: 270px;
+    top: 0px;
+    z-index: 110000;
+    background: transparent;
+    z-index: 11000000 !important;
+}
+
+.sidebar-mobile {
+	position: fixed;
+	top: 60px;
+	height: 100%;
+	width: 100vw;
+	background: #fbfbfb !important;
+	z-index: 601000903;
+}
+
+.display-none {
+	display: none;
+}
+.flex-box{
+	height: 500px; 
+	width: 60vw;
+}
+.flex-box-sm {
+	height: 500px; 
+	width: 40vw;
+	border-radius: 30px; 
+	box-shadow: 0 5px 20px -3px rgb(25, 107, 105);
+}
+.width-justification {
+	width: 80%;
+}
+.welcome-box {
+	height: 500px; width: 100%;
+	background-color: rgba(25, 107, 105); 
+	border-radius: 30px 0px 0px 30px; 
+	padding: 15px; 
+	box-shadow: 0 5px 50px -3px rgb(25, 107, 105);
+}
+.login-box {
+	height: 500px; 
+	width: 100%; 
+	background-color: #fff; 
+	border: 1px solid #196b69; 
+	border-radius: 0px 30px 30px 0px; 
+	padding: 30px;
+	box-shadow: 0 5px 5px -3px rgb(25, 107, 105);
+}
+
+@media only screen and (max-width:400px) {
+	.width-justification {
+		width: 95%;
+	}
+}
+
+@media only screen and (max-width:900px) {
+	.flex-box{
+		width: 100%;
+		padding: 15px;
+		height: auto;
+	}
+	.flex-box-sm {
+		width: 100%;
+		padding: 15px;
+		height: auto;
+	}
+	.welcome-box {
+		border-radius: 0px 90px 0px 0px;
+	}
+	.login-box {
+		border-radius: 0px 0px 0px 90px;
+	}
+}
+
+@media only screen and (min-width:900px) {
+	.position-changes {
+		justify-content: left !important;
+	}
+	.relative-top-30 {
+		top: 30% !important;
+		position: relative;
+	}
+	.screen-padding {
+		padding: 0px;
+	}
+}
+
+@media only screen and (max-width:900px) {
+	.hidden-header-sm {
+		display: none;
+	}
+}
+
+@media only screen and (min-width:900px) {
+	.hidden-header-md {
+		display: none;
+	}
 }
