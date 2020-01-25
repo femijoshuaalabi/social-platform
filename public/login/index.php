@@ -86,6 +86,7 @@ box-shadow: 0px 0px 99px rgba(25, 107, 105, 0.06); text-align: center; height: 5
   © 2019 Copyright: Corpersmeet Inc. All rights reserved.
 </div>
     <div id="root"></div>
+    <input type="hidden" id="BASE_URL" value="<?php echo BASE_URL ?>" />
     <?php include "templates/global.js.php"; ?>
     <script src="<?php echo BASE_URL ?>build/app.bundle.js"></script>
 </div>

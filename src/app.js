@@ -1,20 +1,28 @@
 //import React from 'react';
 //import ReactDOM from 'react-dom';
 
-import { WelcomeNote } from './scripts/Ajuwaya'
+import { Login } from './scripts/Ajuwaya'
 
 class App {
+    
     constructor(){
-        WelcomeNote();
+        //Ajuwaya Function Inits
+        this.Init();
     }
 
-    // componentDidMount(){
-       
-    // }
+    /*****************************************************************************
+                            INITIALIZE Ajuwaya FUNCTION
+    *****************************************************************************/
+    Init(){
+        //Login Function
+        Login();
 
-    // render(){
-    //     return ('')
-    // }
+    }
+
+    /*****************************************************************************
+                            INITIALIZE React FUNCTION
+                            #Start React function downward
+    *****************************************************************************/
 }
 
 let app = new App();

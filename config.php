@@ -26,3 +26,34 @@ function getDB()
 	return $dbConnection;
 }
 /* DATABASE CONFIGURATION END */
+
+
+/*SITE DETAILS */
+function siteDetails()
+{
+	$db = getDB();
+	$stmt = $db->prepare("SELECT applicationName,applicationDesc,applicationToken FROM configurations WHERE con_id='1'");  
+	$stmt->execute();
+	$row = $stmt->fetch(PDO::FETCH_OBJ);
+	$data = json_decode(json_encode($row),true);
+	$db = null;
+	return $data;
+}
+
+$siteData=siteDetails();
+define("SITE_KEY", $siteData['applicationToken']);
+define("SITE_NAME", $siteData['applicationName']);
+define("SITE_DESC", $siteData['applicationDesc']);
+
+
+/*SITE DETAILS END*/
+function templateOrderData()
+{
+	$db = getDB();
+	$stmt = $db->prepare("SELECT t_id,t_name,t_file,t_order FROM template ORDER BY t_order ASC");  
+	$stmt->execute();
+	$row = $stmt->fetchAll(PDO::FETCH_OBJ);
+	$data = json_decode(json_encode($row),true);
+	$db = null;
+	return $data;
+}
