@@ -85,8 +85,9 @@
 box-shadow: 0px 0px 99px rgba(25, 107, 105, 0.06); text-align: center; height: 50px; padding: 15px;">
   © 2019 Copyright: Corpersmeet Inc. All rights reserved.
 </div>
-
+    <div id="root"></div>
     <?php include "templates/global.js.php"; ?>
+    <script src="<?php echo BASE_URL ?>build/app.bundle.js"></script>
 </div>
   </body>
 </html>

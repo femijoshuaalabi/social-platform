@@ -1,18 +1,23 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+//import React from 'react';
+//import ReactDOM from 'react-dom';
 
 import { WelcomeNote } from './scripts/Ajuwaya'
 
-class App extends React.Component {
+class App {
     constructor(){
-        super()
-        console.log(WelcomeNote('You are Welcome to Ajuwaya Connect'));
+        WelcomeNote();
     }
 
-    render(){
-        return (<h1>Welcome to Ajuwaya Connect</h1>)
-    }
+    // componentDidMount(){
+       
+    // }
+
+    // render(){
+    //     return ('')
+    // }
 }
+
+let app = new App();
 
 //ReactDOM.render(<App />, document.getElementById('root'));
 
