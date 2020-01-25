@@ -1,2 +1,2 @@
-# social-platform
-This is a Social Platform for Nigerians
+# Ajuwaya Connect
+Social Platform for Nigerians
