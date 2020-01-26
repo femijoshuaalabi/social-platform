@@ -3,6 +3,11 @@ import { AJYPost,AJYGet } from './AjuwayaRequests'
 
 //Variable
 $.baseUrl = $('#BASE_URL').val();
+let uid = $('#uid').val();
+let username = $('#username').val();
+let public_username = $('#public_username').val();
+let token =  $('#token').val();
+
 
 /*****************************************************************************
                             LOGIN TO ACCOUNT
@@ -45,4 +50,9 @@ export function Login(){
 
     })
 }
+
+/*****************************************************************************
+                            MESSEGING METHODS
+*****************************************************************************/
+
 

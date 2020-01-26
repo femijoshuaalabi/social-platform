@@ -8,10 +8,7 @@
   </head>
   <body>
     <div id="root"></div>
-    <div>Profile Page</div>
-    <div>
-        <a href="<?php echo BASE_URL?>signout">Log Out</a>
-    </div>
+
     <footer ajuwaya-target="limit">
         <input type="hidden" id="BASE_URL" value="<?php echo BASE_URL ?>" />
         <input type="hidden" id="uid" value="<?php echo $this->sessionUid ?>"/>

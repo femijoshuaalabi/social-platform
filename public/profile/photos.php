@@ -8,9 +8,7 @@
     
   </head>
   <body>
-    <?php 
-    include "templates/global.css.php"; 
-    ?>
+    Hello, worlld
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
     <script src="<?php echo BASE_URL ?>build/app.bundle.js"></script>

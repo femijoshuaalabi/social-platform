@@ -4,4 +4,3 @@ require 'structures/autoload.php';
 
 $app =  new Bootstarp();
 $app->Distribution();
-?>
