@@ -30,7 +30,7 @@ module.exports = {
     },
     watchOptions: {
         aggregateTimeout: 300,
-        poll: 1000,
+        poll: true,
         ignored: [/node_modules/,
                 '**/*.bundle.css',
                 '**/*.bundle.js',

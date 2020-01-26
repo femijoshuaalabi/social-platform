@@ -1,13 +1,14 @@
 //import React from 'react';
 //import ReactDOM from 'react-dom';
 
-import { Login,text } from './scripts/Ajuwaya'
+import { Login } from './scripts/Ajuwaya'
 
 class App {
     
     constructor(){
         //Ajuwaya Function Inits
         this.Init();
+        console.log("Ajuwaya Module is working now");
     }
 
     /*****************************************************************************
