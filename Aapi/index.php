@@ -7,6 +7,7 @@
 require '../config.php';
 require 'AJYFunction/functions.php';
 require 'AJYFunction/FunctionBuilder.php';
+require 'AJYFunction/InternalFunctions.php';
 require 'Slim/Slim.php';
 
 \Slim\Slim::registerAutoloader();
@@ -18,65 +19,10 @@ $app = new \Slim\Slim();
 
 $app->post('/login', 'login'); /* User login */
 
+$app->post('/conversationLists', 'conversationLists'); /* Message conversation List */
+
 $app->run();
 
-
-
-
-
-
-/*****************************************************************************
-                           INTERNAL FUNCTION
-*****************************************************************************/
-function configurations() {
-    $sql = "SELECT language_labels,applicationName,applicationDesc,forgot,newsfeedPerPage,friendsPerPage,photosPerPage,groupsPerPage,notificationPerPage, uploadImage,bannerWidth, profileWidth,gravatar,friendsWidgetPerPage,upload FROM configurations WHERE con_id='1' ";
-    try {
-        $db = getDB();
-        $stmt = $db->query($sql);
-        $configuration = $stmt->fetchAll(PDO::FETCH_OBJ);
-        $db = null;
-        return $configuration;
-    } catch (PDOException $e) {
-        echo '{"error":{"text":' . $e->getMessage() . '}}';
-    }
-}
-
-function internalProfilePicUpload($uid, $image) {
-
-    try {
-        if ($uid > 0) {
-            $db = getDB();
-            $sql = "UPDATE users SET profile_pic=:image,profile_pic_status=:status WHERE uid=:uid";
-            $stmt = $db->prepare($sql);
-            $stmt->bindParam("image", $image, PDO::PARAM_STR);
-            $stmt->bindParam("uid", $uid, PDO::PARAM_INT);
-            $status = '1';
-            $stmt->bindParam("status", $status);
-            $stmt->execute();
-
-
-            $sql1 = "INSERT INTO user_uploads (image_path,uid_fk,image_type) VALUES (:image,:uid,:status)";
-            $stmt1 = $db->prepare($sql1);
-            $stmt1->bindParam("image", $image, PDO::PARAM_STR);
-            $stmt1->bindParam("uid", $uid, PDO::PARAM_INT);
-            $status = '2';
-            $stmt1->bindParam("status", $status);
-            $stmt1->execute();
-
-            $sql2 = "SELECT uid,profile_pic FROM users WHERE uid=:uid";
-            $stmt2 = $db->prepare($sql2);
-            $stmt2->bindParam("uid", $uid, PDO::PARAM_INT);
-            $stmt2->execute();
-
-            $profileBGImageUpload = $stmt2->fetchAll(PDO::FETCH_OBJ);
-            $db = null;
-
-            return $profileBGImageUpload;
-        }
-    } catch (PDOException $e) {
-        echo '{"error":{"text":' . $e->getMessage() . '}}';
-    }
-}
 
 
 
@@ -84,7 +30,7 @@ function internalProfilePicUpload($uid, $image) {
                             API STUCTURES
 *****************************************************************************/
 
-//Login Function
+/* Login */
 function login() {
     $request = \Slim\Slim::getInstance()->request();
     $data = json_decode($request->getBody());
@@ -140,3 +86,85 @@ function login() {
         echo '{"error":{"text":' . $e->getMessage() . '}}';
     }
 }
+
+
+
+
+
+/* Converstaions */
+function conversationLists() {
+    $request = \Slim\Slim::getInstance()->request();
+    $data = json_decode($request->getBody());
+
+    // $data->uid = 475;
+    // $data->last_time = '';
+    // $data->conversation_uid = '';
+    // $data->token = '2b8ce5597e34dadfabd7d239901c3765';
+
+    $uid=$data->uid;
+    $last_time=$data->last_time;
+    $conversation_uid=$data->conversation_uid;
+
+    
+    /* More Records*/
+    $morequery="";
+    if($last_time)
+    {
+        $morequery=" and c.time<'".$last_time."' ";
+    }
+    /* More Button End*/
+    
+    try {
+        $key=md5(SITE_KEY.$data->uid);
+        if($key==$data->token)
+        {
+            $db = getDB();
+            $sql = "SELECT DISTINCT u.uid,c.c_id,u.name,u.profile_pic,u.username,u.email,c.time
+            FROM conversation c, users u, conversation_reply r
+            WHERE CASE
+            WHEN c.user_one = :user_one
+            THEN c.user_two = u.uid
+            WHEN c.user_two = :user_one
+            THEN c.user_one= u.uid
+            END
+            AND (
+            c.user_one =:user_one
+            OR c.user_two =:user_one
+            ) AND u.status=:status AND c.c_id=r.c_id_fk AND u.uid<>:conversation_uid
+            $morequery ORDER BY c.time DESC LIMIT 15";
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam("user_one", $uid,PDO::PARAM_INT);
+            $stmt->bindParam("conversation_uid", $conversation_uid);
+            $status='1';
+            $stmt->bindParam("status", $status);
+            $stmt->execute();
+            $conversations = $stmt->fetchAll(PDO::FETCH_OBJ);
+            $db = null;
+            $count=count($conversations);
+            for($z=0;$z<$count;$z++)
+            {
+                /* TimeAgo */
+                $n_time=$conversations[$z]->time;
+                $conversations[$z]->timeAgo=date("c", $n_time);
+                
+                /*Username Check*/
+                if(empty($conversations[$z]->name))
+                {
+                    $conversations[$z]->name=$conversations[$z]->username;
+                    
+                }
+                /*ProfilePic Check*/
+                $conversations[$z]->profile_pic=profilePic($conversations[$z]->profile_pic);
+                $conversations[$z]->lastReply=internalConversationLast($conversations[$z]->c_id);
+                
+            }
+            
+            $db = null;
+            echo '{"conversations": ' . json_encode($conversations) . '}';
+        }
+    } catch(PDOException $e) {
+        echo '{"error":{"text":'. $e->getMessage() .'}}';
+    }
+    
+}
+

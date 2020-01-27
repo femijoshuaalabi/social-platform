@@ -54,5 +54,34 @@ export function Login(){
 /*****************************************************************************
                             MESSEGING METHODS
 *****************************************************************************/
+export function conversationLists(){
 
+    //last_time will be the last createdtime of the conversationLists and it's will
+    //be use to fetch and 15 records on user scroll from the database.
+    //Hint: Use state or Global Variable so that last_time will be changing on every
+    //15 called records
+    //Note: last_time should return empty string by default and change per return records from database
+
+    //Conversation_uid shoud return empty string, this is used to exclude user from the
+    //conversation list
+    //Hint: conversation_id = ''
+
+    let last_time = ''
+    let conversation_uid = ''
+
+    let encodedata = {
+        uid: uid,
+        token: token,
+        last_time: last_time,
+        conversation_uid: conversation_uid 
+    }
+
+    let apiBaseUrl = $.baseUrl + 'Aapi/conversationLists';
+
+    AJYPost(apiBaseUrl,encodedata).then((result) => {
+        console.log(result)
+    });
+
+
+}
 

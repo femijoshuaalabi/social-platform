@@ -1,7 +1,7 @@
 //import React from 'react';
 //import ReactDOM from 'react-dom';
 
-import { Login } from './scripts/Ajuwaya'
+import { Login,conversationLists } from './scripts/Ajuwaya'
 
 class App {
     
@@ -17,7 +17,7 @@ class App {
     Init(){
         //Login Function
         Login();
-
+        conversationLists();
     }
 
     /*****************************************************************************
