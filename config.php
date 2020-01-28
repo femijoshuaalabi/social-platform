@@ -14,6 +14,17 @@ define("UPLOAD_PATH", "uploads/");
 
 
 
+/*SMTP CONFIGURATIONS */
+define("SMTP_CONNECTION", "0"); //On "1" Off "0"
+define("SMTP_USERNAME", "");
+define("SMTP_PASSWORD", "");
+define("SMTP_HOST", "");
+define("SMTP_PORT", "");
+define("SMTP_FROM_EMAIL", ""); //Your website supprot email.
+define("SMTP_FROM_TITLE", "WallScript Support"); //eg: Support WebsiteName
+/*SMTP CONFIGURATIONS END*/
+
+
 function getDB()
 {
 	$dbhost=DB_SERVER;

@@ -106,4 +106,37 @@ $filename = $path.$actual_image_name;
 return $filename;
 }
 
+
+
+
+ /* Send Email */
+
+ function sendMail($to,$subject,$body)
+ {
+ require 'class.phpmailer.php';
+ $from = SMTP_FROM_EMAIL;
+ $title=SMTP_FROM_TITLE;
+ $mail = new PHPMailer();
+ $mail->IsSMTP(true);            // use SMTP
+ $mail->IsHTML(true);
+ //$mail->SMTPDebug  = 2;        // enables SMTP debug information (for testing)
+ // 1 = errors and messages
+ // 2 = messages only 
+ // Port Value 401
+ $mail->SMTPAuth   = true;                  // enable SMTP authentication
+ $mail->Host       = SMTP_HOST;           // Amazon SES server, note "tls://" protocol
+ $mail->Port       = SMTP_PORT;                    // set the SMTP port
+ $mail->Username   = SMTP_USERNAME;  // SES SMTP  username
+ $mail->Password   = SMTP_PASSWORD;  // SES SMTP password
+ 
+ $mail->SetFrom($from, $title);
+ $mail->AddReplyTo($from,$title);
+ $mail->Subject    = $subject;
+ $mail->MsgHTML($body);
+ $address = $to;
+ 
+ $mail->AddAddress($address, $to);
+ $mail->Send();
+ }
+
 ?>
