@@ -7,11 +7,22 @@ session_start();
 define('DB_SERVER', 'localhost');
 define('DB_USERNAME', 'root');
 define('DB_PASSWORD', '');
-define('DB_DATABASE', 'corpersmeet');
+define('DB_DATABASE', 'ajuwaya');
 define("BASE_URL", "http://localhost/ajuwaya/");
 define("API_BASE_URL", "http://localhost/ajuwaya/");
 define("UPLOAD_PATH", "uploads/");
 
+
+
+/*SMTP CONFIGURATIONS */
+define("SMTP_CONNECTION", "0"); //On "1" Off "0"
+define("SMTP_USERNAME", "");
+define("SMTP_PASSWORD", "");
+define("SMTP_HOST", "");
+define("SMTP_PORT", "");
+define("SMTP_FROM_EMAIL", ""); //Your website supprot email.
+define("SMTP_FROM_TITLE", "WallScript Support"); //eg: Support WebsiteName
+/*SMTP CONFIGURATIONS END*/
 
 
 function getDB()

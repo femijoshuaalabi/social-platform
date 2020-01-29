@@ -16,6 +16,9 @@ class Bootstarp {
     
     private function _loadInBuiltController() {
         $getURL = $this->_requestURL->getURL()[0];
+        if(empty($this->_requestURL->getURL()[0]) || $this->_requestURL->getURL()[0] == 'index'){
+            $getURL = 'index';
+        }
         $PageUrl = 'public/' . $getURL . '/index.php';
         require 'PagesControl.php';
         if(file_exists($PageUrl)){
@@ -25,9 +28,7 @@ class Bootstarp {
             if($this->_requestURL->getURL()[0] == 'message'){
                 $_SESSION['public_username'] = $this->_requestURL->getURL()[1];
             }
-            if(empty($this->_requestURL->getURL()[0]) || $this->_requestURL->getURL()[0] == 'index'){
-                $getURL = 'index';
-            }
+            
            $this->_controller = new PagesControl($getURL);
            $this->_pageName = $this->_requestURL->getURL()[0];
         }else{
