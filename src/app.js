@@ -4,19 +4,19 @@
 import { Login } from './scripts/Ajuwaya'
 
 class App {
-    
-    constructor(){
+
+    constructor () {
         //Ajuwaya Function Inits
-        this.Init();
-        console.log("Ajuwaya Module is working now");
+        this.Init()
+        console.log("Ajuwaya Module is working now")
     }
 
     /*****************************************************************************
                             INITIALIZE Ajuwaya FUNCTION
     *****************************************************************************/
-    Init(){
+    Init() {
         //Login Function
-        Login();
+        Login()
 
     }
 
@@ -29,7 +29,8 @@ class App {
 
 }
 
-let app = new App();
+let app = new App()
 
 //ReactDOM.render(<App />, document.getElementById('root'));
 
+//
