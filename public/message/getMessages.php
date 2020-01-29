@@ -7,6 +7,7 @@
     <title>Ajuwaya Connect</title>
   </head>
   <body>
+
     <div id="root"></div>
 
     <footer ajuwaya-target="limit">
