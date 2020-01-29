@@ -9,15 +9,35 @@ let public_username = $('#public_username').val();
 let token =  $('#token').val();
 
 
+let PAGE_NAME = $('#PAGE_NAME').val();
+
+export function AjuwayaSeperator(){
+
+    switch (PAGE_NAME) {
+
+        case "login":
+            Login();
+            break;
+        case "register":
+            Register();
+            break;
+        case "message":
+            ConversationLists()
+            ConversationReplies()
+            ReplyConversation()
+            break;
+    }
+    
+}
+
 /*****************************************************************************
                             LOGIN TO ACCOUNT
 *****************************************************************************/
-export function Login(){
+function Login(){
 
     let apiBaseUrl = $.baseUrl + 'Aapi/login';
 
     $('#login').on('click', function(){
-
         let username = $('#username').val();
         let password = $('#password').val();
 
@@ -52,9 +72,16 @@ export function Login(){
 }
 
 /*****************************************************************************
+                            REGISTER AN ACCOUNT
+*****************************************************************************/
+function Register(){
+    console.log('helo')
+}
+
+/*****************************************************************************
                             MESSEGING METHODS
 *****************************************************************************/
-export function conversationLists(){
+function ConversationLists(){
 
     //last_time will be the last createdtime of the conversationLists and it's will
     //be use to fetch and 15 records on user scroll from the database.
@@ -86,7 +113,7 @@ export function conversationLists(){
 
 }
 
-export function conversationReplies(){
+function ConversationReplies(){
 
     let last = ''
     let message_user = "ajuwaya2"
@@ -107,7 +134,7 @@ export function conversationReplies(){
 
 }
 
-export function ReplyConversation(){
+function ReplyConversation(){
     let reply = $("#conversationReply").val();
     let up = $("#uploadvalues").val();
     let uploadvalues = 0;

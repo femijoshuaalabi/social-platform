@@ -1,29 +1,22 @@
 //import React from 'react';
 //import ReactDOM from 'react-dom';
-import $ from "jquery";
 
-import { Login, conversationLists, conversationReplies, ReplyConversation } from './scripts/Ajuwaya'
+import { AjuwayaSeperator } from './scripts/Ajuwaya'
+
 
 class App {
     
     constructor(){
         //Ajuwaya Function Inits
         this.Init();
-        console.log("testing");
+        console.log("Ajuwaya working...");
     }
 
     /*****************************************************************************
                             INITIALIZE Ajuwaya FUNCTION
     *****************************************************************************/
     Init(){
-        // API functions from './scripts/Ajuwaya'
-        if($("#PAGE_TYPE").val() == "login"){
-            Login();
-        }else {
-            conversationLists();
-            conversationReplies();
-            ReplyConversation();
-        }
+        AjuwayaSeperator()
     }
 
     /*****************************************************************************
@@ -36,6 +29,5 @@ class App {
 }
 
 let app = new App();
-
 //ReactDOM.render(<App />, document.getElementById('root'));
 

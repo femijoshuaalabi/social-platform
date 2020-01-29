@@ -85,9 +85,15 @@
 box-shadow: 0px 0px 99px rgba(25, 107, 105, 0.06); text-align: center; height: 50px; padding: 15px;">
   © 2019 Copyright: Corpersmeet Inc. All rights reserved.
 </div>
-    <div id="root"></div>
-    <input type="hidden" id="PAGE_TYPE" value="login" />
-    <input type="hidden" id="BASE_URL" value="<?php echo BASE_URL ?>" />
+
+    <footer ajuwaya-target="limit">
+      <!-- Please always remember to update the value of page name to the page name -->
+      <input type="hidden" id="PAGE_NAME" value="login" />
+      <!-- Page Name tag closed -->
+
+      <input type="hidden" id="BASE_URL" value="<?php echo BASE_URL ?>" />
+    </footer>
+
     <?php include "templates/global.js.php"; ?>
     <script src="<?php echo BASE_URL ?>build/app.bundle.js"></script>
 </div>

@@ -7,9 +7,14 @@
     <title>Ajuwaya Connect</title>
   </head>
   <body>
-    <div id="root"></div>
+
+    <!-- State html here -->
 
     <footer ajuwaya-target="limit">
+        <!-- Please always remember to update the value of page name to the page name -->
+        <input type="hidden" id="PAGE_NAME" value="message" />
+        <!-- Page Name tag closed -->
+
         <input type="hidden" id="BASE_URL" value="<?php echo BASE_URL ?>" />
         <input type="hidden" id="uid" value="<?php echo $this->sessionUid ?>"/>
         <input type="hidden" id="username" value="<?php echo $this->sessionUsername; ?>"/>
