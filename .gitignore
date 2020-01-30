@@ -1,8 +1,10 @@
 # dependencies
 /node_modules
 /build/app.bundle.js
-config.php
-.htaccess
+/config.php
+!/*/config.php
+
+/.htaccess
 
 # testing
 /coverage

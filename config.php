@@ -8,8 +8,8 @@ define('DB_SERVER', 'localhost');
 define('DB_USERNAME', 'root');
 define('DB_PASSWORD', '');
 define('DB_DATABASE', 'ajuwaya');
-define("BASE_URL", "http://localhost/ajuwaya/");
-define("API_BASE_URL", "http://localhost/ajuwaya/");
+define("BASE_URL", "http://localhost/social-platform/social-platform/");
+define("API_BASE_URL", "http://localhost/social-platform/social-platform/");
 define("UPLOAD_PATH", "uploads/");
 
 
