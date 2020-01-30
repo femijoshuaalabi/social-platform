@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="index.css" >
+    <title>The Plug</title>
+</head>
+<body>
+    
+<form class="form">
+    <fieldset id="corp" >
+        <label id="corp-label">Have you served before <b>*</b></label><br>
+        <select id="corp-select" onchange="nysc()">
+            <option value="">Select your answer</option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+        </select>
+    </fieldset>
+    <fieldset id="active" class="none">
+        <label id="active-label">Are you an Alumni or Currently Serving <b>*</b></label>
+        <select id="active-select" onchange="serviceAction()">
+            <option value="">Select your answer</option>
+            <option value="Alumni">Alumni</option>
+            <option value="Current">Current</option>
+        </select>
+    </fieldset>
+    <fieldset id="year" class="none">
+        <label id="year-label">What year <b>*</b></label>
+        <input type="date" id="year-input">
+
+        <div class="buttons">
+            <button type="button" id="button1" class="button1" onclick="back()">Back</button>
+            <button type="button" id="button2" class="button2" onclick="proceed()">Proceed</button>
+        </div>
+    </fieldset>
+
+    <h1 id="text" class="none">Welcome to the landing page</h1>
+
+
+   
+</form>
+
+
+
+
+    <script src="index.js" ></script>
+</body>
+</html>
