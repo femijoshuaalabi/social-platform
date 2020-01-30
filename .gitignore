@@ -1,5 +1,8 @@
 # dependencies
 /node_modules
+/build/app.bundle.js
+config.php
+.htaccess
 
 # testing
 /coverage
