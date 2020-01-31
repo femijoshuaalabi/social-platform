@@ -81,7 +81,7 @@ function Register(){
 /*****************************************************************************
                             MESSEGING METHODS
 *****************************************************************************/
-function ConversationLists(){
+export function ConversationLists(){
 
     //last_time will be the last createdtime of the conversationLists and it's will
     //be use to fetch and 15 records on user scroll from the database.
@@ -113,7 +113,7 @@ function ConversationLists(){
 
 }
 
-function ConversationReplies(){
+export function ConversationReplies(){
 
     let last = ''
     let message_user = "ajuwaya2"
@@ -134,7 +134,7 @@ function ConversationReplies(){
 
 }
 
-function ReplyConversation(){
+export function ReplyConversation(){
     let reply = $("#conversationReply").val();
     let up = $("#uploadvalues").val();
     let uploadvalues = 0;
