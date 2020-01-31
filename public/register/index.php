@@ -12,7 +12,13 @@
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <?php include "templates/introductionPage/header.php"; ?>
 
-    <div id="RegistrationForm"></div>
+    <div id="RegistrationForm" style="">
+      <div class="RegistrationStep" id="stepOne"></div>
+      <div class="RegistrationStep" id="stepTwo"></div>
+      <div class="RegistrationStep" id="stepThree"></div>
+      <div class="RegistrationStep" id="stepFour"></div>
+     <input type="hidden" id="stepConfirm" value="0">
+    </div>
 
     <footer ajuwaya-target="limit">
         <!-- Please always remember to update the value of page name to the page name -->

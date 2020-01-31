@@ -3,6 +3,11 @@
 /*****************************************************************************
                             AJUWAYA CONNECT API
 *****************************************************************************/
+// Import PHPMailer classes into the global namespace
+// These must be at the top of your script, not inside a function
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
 
 require '../config.php';
 require 'AJYFunction/functions.php';
@@ -18,6 +23,10 @@ $app = new \Slim\Slim();
 *****************************************************************************/
 
 $app->post('/login', 'login'); /* User login */
+$app->post('/signup', 'signup'); /* User Signup  */
+$app->post('/usernameEmailCheck', 'usernameEmailCheck'); /* SignUp Check */ 
+$app->post('/send_code_to_mail', 'send_code_to_mail'); /* send code to_mail */ 
+$app->post('/ValidateEmailWithPin', 'ValidateEmailWithPin'); /* Validate Email With Pin */
 
 $app->post('/conversationLists', 'conversationLists'); /* Message conversation List */
 $app->post('/conversationReplies', 'conversationReplies'); /* Message conversation Replies */
@@ -41,7 +50,7 @@ function login() {
 
     try {
         $db = getDB();
-        $sql = "SELECT uid,notification_created,username,name,profile_pic,tour FROM users WHERE (username=:username or email=:username) and password=:password AND status='1' ";
+        $sql = "SELECT uid,notification_created,username,name,profile_pic,tour FROM users WHERE (username=:username or email=:username) and password=:password ";
         $stmt = $db->prepare($sql);
         $stmt->bindParam("username", $data->username, PDO::PARAM_STR);
         $password = md5($data->password);
@@ -89,7 +98,346 @@ function login() {
     }
 }
 
+/*****************************************************************************
+                                 REGISTRATION BLOCK
+*****************************************************************************/
 
+/* ### Username Check ### */
+function usernameEmailCheck() {
+    $request = \Slim\Slim::getInstance()->request();
+    $data = json_decode($request->getBody());
+    $usernameEmail = $data->usernameEmail;
+    $type = $data->type;
+    $valid = 0;
+
+    try {
+        $db = getDB();
+
+        if ($type) {
+            if (filter_var($usernameEmail, FILTER_VALIDATE_EMAIL)) {
+                $sql = "SELECT uid FROM users WHERE email=:usernameEmail";
+                $valid = 1;
+            }
+        } else {
+            if (preg_match('/^[a-zA-Z0-9]{3,}$/', $usernameEmail)) {
+                $sql = "SELECT uid FROM users WHERE username=:usernameEmail";
+                $valid = 1;
+            }
+        }
+
+        if ($valid) {
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam("usernameEmail", $usernameEmail, PDO::PARAM_STR);
+            $stmt->execute();
+            $count = $stmt->rowCount();
+
+
+            if ($count == 0)
+                echo '{"usernameEmailCheck": [{"status":"1"}]}';
+            else
+                echo '{"usernameEmailCheck": []}';
+        }
+        $db = null;
+    } catch (PDOException $e) {
+        echo '{"error":{"text":' . $e->getMessage() . '}}';
+    }
+}
+
+/* ### send_code_to_mail ### */
+function send_code_to_mail() {
+    $request = \Slim\Slim::getInstance()->request();
+    $data = json_decode($request->getBody());
+    $usernameEmail = $data->usernameEmail;
+    $type = '1';
+    $valid = 0;
+
+    //$usernameEmail = 'femi@okk.com';
+
+    try {
+        $db = getDB();
+
+        if ($type) {
+            if (filter_var($usernameEmail, FILTER_VALIDATE_EMAIL)) {
+                $sql = "SELECT uid FROM users WHERE email=:usernameEmail";
+                $valid = 1;
+            }
+        } else {
+            if (preg_match('/^[a-zA-Z0-9]{3,}$/', $usernameEmail)) {
+                $sql = "SELECT uid FROM users WHERE username=:usernameEmail";
+                $valid = 1;
+            }
+        }
+
+        if ($valid) {
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam("usernameEmail", $usernameEmail, PDO::PARAM_STR);
+            $stmt->execute();
+            $count = $stmt->rowCount();
+
+            if ($count == 0){
+
+                $gen_code = '';
+                for ($i = 0; $i<4; $i++) {
+                    $gen_code .= mt_rand(0,9);
+                }
+
+                 $sql2 = "SELECT id FROM confirm_user WHERE email=:usernameEmail";
+                 $stmt2 = $db->prepare($sql2);
+                 $stmt2->bindParam("usernameEmail", $usernameEmail, PDO::PARAM_STR);
+                 $stmt2->execute();
+                 $count2 = $stmt2->rowCount();
+
+                 if($count2 == 0){
+                    $sql1 = "INSERT INTO confirm_user(email,pin)VALUES(:email,:pin)";
+                    $stmt1 = $db->prepare($sql1);
+                    $stmt1->bindParam("email", $usernameEmail, PDO::PARAM_STR);
+                    $stmt1->bindParam("pin", $gen_code, PDO::PARAM_STR);
+                    $stmt1->execute();
+                 }else{
+                    $sql3 = "UPDATE confirm_user SET pin=:pin WHERE email=:usernameEmail";
+                    $stmt3 = $db->prepare($sql3);
+                    $stmt3->bindParam("usernameEmail", $usernameEmail, PDO::PARAM_STR);
+                    $stmt3->bindParam("pin", $gen_code, PDO::PARAM_STR);
+                    $stmt3->execute();
+                 }
+
+                if(SMTP_CONNECTION == 1) {
+                    // Load Composer's autoloader
+                    require 'PHPMailer/src/Exception.php';
+                    require 'PHPMailer/src/PHPMailer.php';
+                    require 'PHPMailer/src/SMTP.php';
+                    require 'PHPMailer/src/POP3.php';
+                    require 'PHPMailer/src/OAuth.php';
+
+                    // Instantiation and passing `true` enables exceptions
+                    $mail = new PHPMailer(true);
+                    $template_url = BASE_URL . 'Aapi/email_template/confirm_code.php';
+                    $body_content = file_get_contents($template_url);
+
+                    $body_content = str_replace('%email%', $usernameEmail, $body_content);
+                    $body_content = str_replace('%pin%', $gen_code, $body_content);
+
+                    try {
+                        //Server settings
+                        $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      // Enable verbose debug output
+                        //$mail->isSMTP();                                            // Send using SMTP
+                        $mail->Host       = 'us2.smpt.mailhostbox.com';                    // Set the SMTP server to send through
+                        $mail->SMTPAuth   = false;                                   // Enable SMTP authentication
+                        $mail->Username   = 'hello@corpersmeet.com';                     // SMTP username
+                        $mail->Password   = 'Password007+';                               // SMTP password
+                        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; PHPMailer::ENCRYPTION_SMTPS` also accepted
+                        $mail->Port       = 587;                                    // TCP port to connect to
+
+                        //Recipients
+                        $mail->setFrom('no-reply@corpersmeet.com', 'Corpersmeet Inc.');
+                        $mail->addAddress($usernameEmail, $usernameEmail);     // Add a recipient
+
+                        // Attachments
+                        //$mail->addAttachment('/var/tmp/file.tar.gz');         // Add attachments
+                        //$mail->addAttachment('/tmp/image.jpg', 'new.jpg');    // Optional name
+
+                        // Content
+                        $mail->isHTML(true);                                  // Set email format to HTML
+                        $mail->Subject = 'Please Confirm your Email to Continue your registration';
+                        $mail->Body    = $body_content;
+                        $mail->AltBody = strip_tags($body_content);
+                        $mail->send();
+                        //echo 'Message has been sent';
+                        echo '{"usernameEmailCheck": [{"status":"1"}]}';
+                    } catch (Exception $e) {
+                        //echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+                        echo '{"usernameEmailCheck": [{"status":"'.$mail->ErrorInfo.'"}]}';
+                    }
+                }else{
+                    echo '{"usernameEmailCheck": [{"status":"1"}]}';
+                }
+            }
+            else{
+                echo '{"usernameEmailCheck": []}';
+            }
+        }
+        $db = null;
+    } catch (PDOException $e) {
+        echo '{"error":{"text":' . $e->getMessage() . '}}';
+    }
+}
+
+function ValidateEmailWithPin() {
+    $request = \Slim\Slim::getInstance()->request();
+    $data = json_decode($request->getBody());
+    $usernameEmail = $data->usernameEmail;
+    $type = '1';
+    $valid = 0;
+    $pin = $data->pin;
+
+    try {
+        $db = getDB();
+
+        if ($type) {
+            if (filter_var($usernameEmail, FILTER_VALIDATE_EMAIL)) {
+                $sql = "SELECT uid FROM users WHERE email=:usernameEmail";
+                $valid = 1;
+            }
+        } else {
+            if (preg_match('/^[a-zA-Z0-9]{3,}$/', $usernameEmail)) {
+                $sql = "SELECT uid FROM users WHERE username=:usernameEmail";
+                $valid = 1;
+            }
+        }
+
+        if ($valid) {
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam("usernameEmail", $usernameEmail, PDO::PARAM_STR);
+            $stmt->execute();
+            $count = $stmt->rowCount();
+
+            if ($count == 0){
+                 $sql2 = "SELECT id FROM confirm_user WHERE email=:usernameEmail and pin=:pin";
+                 $stmt2 = $db->prepare($sql2);
+                 $stmt2->bindParam("usernameEmail", $usernameEmail, PDO::PARAM_STR);
+                 $stmt2->bindParam("pin", $pin, PDO::PARAM_STR);
+                 $stmt2->execute();
+                 $count2 = $stmt2->rowCount();
+                 if($count2 > 0){
+
+                    echo '{"usernameEmailCheck": [{"status":"1"}]}';
+                 }else{
+                    echo '{"usernameEmailCheck": []}';
+                 }
+            }
+            else{
+                echo '{"usernameEmailCheck": []}';
+            }
+        }
+        $db = null;
+    } catch (PDOException $e) {
+        echo '{"error":{"text":' . $e->getMessage() . '}}';
+    }
+}
+
+function signup() {
+    $request = \Slim\Slim::getInstance()->request();
+    $data = json_decode($request->getBody());
+    $email = $data->email;
+    $username = $data->username;
+    $password = $data->password;
+    $name = $data->name;
+
+    //$email = 'heloo@ggcs.com';
+    //$username = 'admin8';
+    //$password = 'password';
+    //$name = "Alabi Joshua";
+
+
+    try {
+
+        $username_check = preg_match('~^[A-Za-z0-9_]{3,20}$~i', $username);
+        $emain_check = preg_match('~^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.([a-zA-Z]{2,4})$~i', $email);
+        $password_check = preg_match('~^[A-Za-z0-9!@#$%^&*()_]{6,20}$~i', $password);
+
+        //Things to note but skipped for now
+        /**********************************************************************
+             $emain_check > 0 && $username_check > 0 && $password_check > 0
+        ************************************************************************/
+
+        if (strlen(trim($username)) > 0 && strlen(trim($password)) > 0 && strlen(trim($email)) > 0) {
+            $db = getDB();
+            $sql = "SELECT uid FROM users WHERE username=:username or email=:email";
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam("username", $username, PDO::PARAM_STR);
+            $stmt->bindParam("email", $email, PDO::PARAM_STR);
+            $stmt->execute();
+            $mainCount = $stmt->rowCount();
+            //$mainCount = 0;
+            $created = time();
+            if ($mainCount == 0) {
+                $status = '1';
+                if (SMTP_CONNECTION > 0) {
+                    $status = '1';
+                }
+                /* Inserting user values */
+                $email_active_code = md5($email . time());
+                $sql1 = "INSERT INTO users(username,password,email,name,last_login,email_activation,status)VALUES(:username,:password,:email,:name,:created,:email_activation,:status)";
+                $stmt1 = $db->prepare($sql1);
+                $stmt1->bindParam("username", $username, PDO::PARAM_STR);
+                $password = md5($password);
+                $stmt1->bindParam("password", $password, PDO::PARAM_STR);
+                $stmt1->bindParam("email", $email, PDO::PARAM_STR);
+                $stmt1->bindParam("name", $name, PDO::PARAM_STR);
+                $stmt1->bindParam("created", $created);
+                $stmt1->bindParam("status", $status);
+                $stmt1->bindParam("email_activation", $email_active_code);
+                $stmt1->execute();
+
+
+
+                $stmt2 = $db->prepare("SELECT uid,notification_created,username,name,profile_pic,tour FROM users WHERE username=:username");
+                $stmt2->bindParam("username", $data->username, PDO::PARAM_STR);
+                $stmt2->execute();
+                $signup = $stmt2->fetchAll(PDO::FETCH_OBJ);
+                $uid = $signup[0]->uid;
+
+                if ($uid > 0) {
+                    $sql3 = "INSERT INTO friends(friend_one,friend_two,role,created)VALUES(:uid,:uid,:me,:created)";
+                    $stmt3 = $db->prepare($sql3);
+                    $stmt3->bindParam("uid", $uid, PDO::PARAM_INT);
+                    $time = time();
+
+                    $stmt3->bindParam("created", $time, PDO::PARAM_STR);
+                    $me = 'me';
+                    $stmt3->bindParam("me", $me, PDO::PARAM_STR);
+                    $stmt3->execute();
+                }
+
+            $sql4 = "SELECT uid,notification_created,username,name,profile_pic,tour FROM users WHERE (username=:username or email=:username) and password=:password AND status='1' ";
+                    $stmt4 = $db->prepare($sql4);
+                    $stmt4->bindParam("username", $data->username, PDO::PARAM_STR);
+                    $password = md5($data->password);
+                    $stmt4->bindParam("password", $password, PDO::PARAM_STR);
+                    $stmt4->execute();
+                    $mainCount = $stmt4->rowCount();
+                    $login = $stmt4->fetchAll(PDO::FETCH_OBJ);
+                    if (!empty($login)) {
+                        $uid = $login[0]->uid;
+                        $key = SITE_KEY . $uid;
+                        $login[0]->token = md5($key);
+                        $notification_created = $login[0]->notification_created;
+                        if ($mainCount == 1) {
+                            $photos_query = $db->query("SELECT id FROM user_uploads WHERE uid_fk='$uid' and group_id_fk='0'");
+                            $photos_count = $photos_query->rowCount(); /* Photos Count */
+                            $updates_query = $db->query("SELECT msg_id FROM messages WHERE uid_fk='$uid' and group_id_fk='0'");
+                            $updates_count = $updates_query->rowCount(); /* Updates Count */
+                            $time = time();
+                            $updates_query = $db->query("UPDATE users SET last_login='$time',photos_count='$photos_count',updates_count='$updates_count' WHERE uid='$uid'");
+                        }
+                    }
+                    $db = null;
+                    /* Username Modification */
+                    if ($login[0]->name) {
+                        $name = htmlCode($login[0]->name);
+                    } else {
+                        $name = $login[0]->username;
+                    }
+
+                    $login[0]->name = $name;
+                    /* Profile Pic Modification */
+                    if ($login) {
+                        $login[0]->profile_pic = profilePic($login[0]->profile_pic);
+                        $login[0]->configurations = configurations();
+                    }
+            $finalStatus = $login;
+            $db = null;
+            echo '{"signup": '. json_encode($finalStatus).'}';
+            } else {
+                $finalStatus = '0';
+            }
+        }else {
+            echo '{"signup":{"text":"Unknown error"}}';
+        }
+    } catch (PDOException $e) {
+        echo '{"error":{"text":' . $e->getMessage() . '}}';
+    }
+}
 
 
 /*****************************************************************************

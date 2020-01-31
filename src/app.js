@@ -7,7 +7,9 @@ import { AjuwayaSeperator } from './scripts/Ajuwaya'
 class App {
     
     constructor(){
-        //Ajuwaya Function Inits
+        /*****************************************************************************
+                                Ajuwaya Function Inits
+        *****************************************************************************/
         this.Init();
         console.log("Ajuwaya working...");
     }
@@ -16,6 +18,9 @@ class App {
                             INITIALIZE Ajuwaya FUNCTION
     *****************************************************************************/
     Init(){
+        /*****************************************************************************
+                    AjuwayaSeperator Seperate Components for each Pages
+        *****************************************************************************/
         AjuwayaSeperator()
     }
 
