@@ -6,18 +6,24 @@ import { AjuwayaSeperator } from './scripts/Ajuwaya'
 
 class App {
 
-    constructor () {
-        //Ajuwaya Function Inits
 
-        this.Init();
-        console.log("Ajuwaya working...");
+    constructor () {
+        /*****************************************************************************
+                                Ajuwaya Function Inits
+        *****************************************************************************/
+
+        this.Init()
+        console.log("Ajuwaya working...")
     }
 
     /*****************************************************************************
                             INITIALIZE Ajuwaya FUNCTION
     *****************************************************************************/
 
-    Init(){
+    Init() {
+        /*****************************************************************************
+                    AjuwayaSeperator Seperate Components for each Pages
+        *****************************************************************************/
         AjuwayaSeperator()
     }
 
@@ -31,6 +37,6 @@ class App {
 }
 
 
-let app = new App();
+let app = new App()
 //ReactDOM.render(<App />, document.getElementById('root'));
 

@@ -1,30 +1,27 @@
 import $ from "jquery";
 import { AJYPost,AJYGet } from './AjuwayaRequests'
+import { RegistrationForm } from '../components/Registration/RegistrationForm'
+import { LoginBlock } from '../components/Login/LoginBlock'
+import { MessageBlock } from '../components/Message/MessageBlock'
 
 //Variable
-$.baseUrl = $('#BASE_URL').val();
-let uid = $('#uid').val();
-let username = $('#username').val();
-let public_username = $('#public_username').val();
-let token =  $('#token').val();
-
-
 let PAGE_NAME = $('#PAGE_NAME').val();
 
+/*****************************************************************************
+                    AjuwayaSeperator Seperate Components for each Pages
+*****************************************************************************/
 export function AjuwayaSeperator(){
 
     switch (PAGE_NAME) {
 
         case "login":
-            Login();
+            Login()
             break;
         case "register":
-            Register();
+            Register()
             break;
         case "message":
-            ConversationLists()
-            ConversationReplies()
-            ReplyConversation()
+            Message()
             break;
     }
     
@@ -34,53 +31,21 @@ export function AjuwayaSeperator(){
                             LOGIN TO ACCOUNT
 *****************************************************************************/
 function Login(){
-
-    let apiBaseUrl = $.baseUrl + 'Aapi/login';
-
-    $('#login').on('click', function(){
-        let username = $('#username').val();
-        let password = $('#password').val();
-
-        let encodedata = {
-            username: username,
-            password: password
-        }
-
-        AJYPost(apiBaseUrl,encodedata).then((result) => {
-
-            let data = result.login[0];
-            let cdata = data.configurations[0];
-            if( data.uid > 0 ) {
-                
-                var url = $.baseUrl + 'public/authentication.php?uid=' + data.uid +
-		                        '&notification_created=' + data.notification_created + '&token=' +
-		                        data.token +
-		                        '&name=' + data.name + '&username=' + data.username + '&pic=' + data
-		                        .profile_pic +
-		                        '&newsfeedPerPage=' + cdata.newsfeedPerPage + '&friendsPerPage=' +
-		                        cdata.friendsPerPage +
-		                        '&photosPerPage=' + cdata.photosPerPage + '&groupsPerPage=' + cdata
-		                        .groupsPerPage +
-		                        '&notificationPerPage=' + cdata.notificationPerPage +
-		                        '&friendsWidgetPerPage=' + cdata.friendsWidgetPerPage + '&tour=' +
-                                data.tour;
-		                        window.location.replace(url);
-            }
-        });
-
-    })
+    let Login = new LoginBlock();
 }
 
 /*****************************************************************************
                             REGISTER AN ACCOUNT
 *****************************************************************************/
 function Register(){
-    console.log('helo')
+    $('.RegistrationStep').hide();
+    let register = new RegistrationForm();
 }
 
 /*****************************************************************************
                             MESSEGING METHODS
 *****************************************************************************/
+<<<<<<< HEAD
 export function ConversationLists(){
 
     //last_time will be the last createdtime of the conversationLists and it's will
@@ -165,8 +130,15 @@ export function ReplyConversation(){
     }
 
     
+=======
+function Message(){
+    let message = new MessageBlock();
+>>>>>>> 441ba5a1c3e6e0d6cac3b54b13427a947807917d
 }
 
+/*****************************************************************************
+                           USER PROFILE
+*****************************************************************************/
 
 
 
