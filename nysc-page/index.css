@@ -46,14 +46,18 @@ b {
     padding: 10px;
     margin-top: 5%;
 }
-#active-select {
-    padding: 10px;
-    margin-top: 5%;
-}
+
 #year-select {
     padding: 10px;
 }
 #year-input {
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid gray;
+    width: 300px;
+    margin-top: 4%;
+}
+#state-input #active-input {
     padding: 10px;
     border-radius: 10px;
     border: 1px solid gray;

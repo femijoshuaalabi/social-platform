@@ -10,33 +10,45 @@
 <body>
     
 <form class="form">
+    <h1 id="form-text">Kindly update your service status</h1>
     <fieldset id="corp" >
-        <label id="corp-label">Have you served before <b>*</b></label><br>
+        <label id="corp-label">What is your service status <b>*</b></label><br>
         <select id="corp-select" onchange="nysc()">
             <option value="">Select your answer</option>
-            <option value="Yes">Yes</option>
-            <option value="No">No</option>
+            <option value="Never">Never served before (Yet to)</option>
+            <option value="Current">Currently serving</option>
+            <option value="Alumnus">Nysc Alumnus</option>
         </select>
     </fieldset>
     <fieldset id="active" class="none">
-        <label id="active-label">Are you an Alumni or Currently Serving <b>*</b></label>
-        <select id="active-select" onchange="serviceAction()">
-            <option value="">Select your answer</option>
-            <option value="Alumni">Alumni</option>
-            <option value="Current">Current</option>
-        </select>
+        <label id="active-label">Which State are You Presently Serving<b>*</b></label>
+        <input type="text" id="active-input" required>
+        <div class="buttons">
+            <button type="button" id="button1" class="button1" onclick="activeBack()">Back</button>
+            <button type="submit" id="button2" class="button2" onclick="activeProceed()">Proceed</button>
+        </div>
+       
+    </fieldset>
+    <fieldset id="state" class="none">
+        <label id="state-label">Which State did you Served<b>*</b></label>
+        <input type="text" id="state-input" required>
+        <div class="buttons">
+            <button type="button" id="button1" class="button1" onclick="activeBack()">Back</button>
+            <button type="submit" id="button2" class="button2" onclick="activeProceedState()">Proceed</button>
+        </div>
+       
     </fieldset>
     <fieldset id="year" class="none">
         <label id="year-label">What year <b>*</b></label>
-        <input type="date" id="year-input">
+        <input type="date" id="year-input" required>
 
         <div class="buttons">
             <button type="button" id="button1" class="button1" onclick="back()">Back</button>
-            <button type="button" id="button2" class="button2" onclick="proceed()">Proceed</button>
+            <button type="submit" id="button2" class="button2" onclick="proceed()">Proceed</button>
         </div>
     </fieldset>
 
-    <h1 id="text" class="none">Welcome to the landing page</h1>
+    <h1 id="text" class="none">Welcome to the work experience page</h1>
 
 
    
