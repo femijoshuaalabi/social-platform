@@ -1,5 +1,5 @@
 import $ from "jquery";
-import { AJYPost } from '../../scripts/AjuwayaRequests'
+import { AJYPost } from '../../../scripts/AjuwayaRequests'
 
 export function ConversationReplies() {
 
