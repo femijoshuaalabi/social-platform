@@ -23,14 +23,20 @@ $app = new \Slim\Slim();
 *****************************************************************************/
 
 $app->post('/login', 'login'); /* User login */
+
+
 $app->post('/signup', 'signup'); /* User Signup  */
 $app->post('/usernameEmailCheck', 'usernameEmailCheck'); /* SignUp Check */ 
 $app->post('/send_code_to_mail', 'send_code_to_mail'); /* send code to_mail */ 
 $app->post('/ValidateEmailWithPin', 'ValidateEmailWithPin'); /* Validate Email With Pin */
 
+
 $app->post('/conversationLists', 'conversationLists'); /* Message conversation List */
 $app->post('/conversationReplies', 'conversationReplies'); /* Message conversation Replies */
 $app->post('/ReplyConversation', 'ReplyConversation'); /* Reply Conversation */
+$app->post('/istypingStatus', 'istypingStatus'); /* is typing  */
+$app->post('/istypingStatusRemove', 'istypingStatusRemove'); /* is typing Remove  */
+$app->post('/istypingStatusUpdate', 'istypingStatusUpdate'); /* is typing Update */
 
 $app->run();
 
@@ -83,8 +89,23 @@ function conversationReplies() {
     require 'Pages/Message/conversationReplies.php';
 }
 
+/*User Reply to Messages*/
 function ReplyConversation(){
     require 'Pages/Message/ReplyConversation.php'; 
+}
+
+/*Is typing Status*/
+function istypingStatus() {
+    require 'Pages/Message/istypingStatus.php'; 
+}
+
+/*Remove is Typing*/
+function istypingStatusRemove() {
+    require 'Pages/Message/istypingStatusRemove.php';
+}
+
+function istypingStatusUpdate() {
+    require 'Pages/Message/istypingStatusUpdate.php';
 }
 
 

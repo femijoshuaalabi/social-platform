@@ -1,7 +1,7 @@
+import $ from "jquery"
 import { ConversationReplies } from './Components/ConversationReplies'
 import { ConversationLists } from './Components/ConversationLists'
 import { ReplyConversation } from './Components/ReplyConversation'
-import { isTypingCheckUp } from './Components/isTypingCheckUp'
 
 export class MessageBlock {
 
@@ -29,11 +29,7 @@ export class MessageBlock {
         sendButton.addEventListener("click", () => {
             ReplyConversation()
         }, false)
-        
-        /*****************************************************************************
-                                    ALERT IF USER IS TYPING
-        *****************************************************************************/
-        isTypingCheckUp()        
+               
     }
 
 }

@@ -1,5 +1,6 @@
 import $ from "jquery";
 import { AJYPost } from '../../../scripts/AjuwayaRequests'
+import { isTypingCheckUp } from './isTypingCheckUp'
 
 export function ConversationReplies() {
 
@@ -65,7 +66,13 @@ export function ConversationReplies() {
                 $("#conversation-container").append(messages)
             })
         }
-    });
+    })
 
+     /*****************************************************************************
+                                ALERT IF USER IS TYPING
+    *****************************************************************************/
+    if(public_username !== ''){
+        isTypingCheckUp()
+    }
 
 }

@@ -1,5 +1,6 @@
-import $ from "jquery";
-import { AJYPost } from '../../../scripts/AjuwayaRequests'
+import { istypingStatus } from './asptract/istypingStatus'
+import { istypingStatusRemove } from './asptract/istypingStatusRemove'
+import { istypingStatusUpdate } from './asptract/istypingStatusUpdate'
 let _ = require('underscore')
 
 /*****************************************************************************
@@ -7,27 +8,41 @@ let _ = require('underscore')
 *****************************************************************************/
 
 export function isTypingCheckUp () {
-    var typing, typingStarted, typingStopped;
-    typing = false;
+
+    var typing, typingStarted, typingStopped
+    typing = false
+
     typingStopped = _.debounce((function() {
         if (!typing) {
-            return;
+            return
         }
         typing = false;
-        console.log('typing is done');
-        //istypingStatusRemove(username, uid, token, apiBaseUrl, baseUrl, message_user);
+        //console.log('typing is done');
+        istypingStatusRemove()
     }), 2000);
+
     typingStarted = function() {
         if (typing) {
-            return;
+            return
         }
         typing = true;
-        console.log('typing has started');
-        //istypingStatus(username, uid, token, apiBaseUrl, baseUrl, message_user);
+        //console.log('typing has started');
+        istypingStatus()
     };
+
     document.querySelector("#conversationReply").oninput = function(event) {
-        typingStarted();
-        typingStopped();
-        return;
-    };
+        typingStarted()
+        typingStopped()
+        return
+    }
+
+    /*****************************************************************************
+                                IS TYPING UPDATE INIT: 3secs
+    *****************************************************************************/
+   setInterval(() => {
+    istypingStatusUpdate()
+   },3000)
+
 }
+
+
