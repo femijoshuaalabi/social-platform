@@ -1,10 +1,6 @@
-@media (min-width: 576px) {
-    #msgBox {
-        max-height: 505px;
-        overflow-y: scroll;
-        overflow-x: hidden;
-    }
-}
+/* @media (min-width: 576px) { */
+
+/* } */
 
 @media (max-width: 576px) {
     .hide-xs {
@@ -16,15 +12,11 @@
     .hide-sm-and-down {
         display: none;
     }
-    #chatColumn {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-    }
     #msgColumn, #chatColumn {
-        -webkit-animation: slide-in 0.3s cubic-bezier(0.785, 0.135, 0.15, 0.86);
-        -o-animation: slide-in 0.3s cubic-bezier(0.785, 0.135, 0.15, 0.86);
-        animation: slide-in 0.3s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+        -webkit-animation: scale-in 0.2s linear;
+        -o-animation: scale-in 0.2s linear;
+        -moz-animation: scale-in 0.2s linear;
+        animation: scale-in 0.2s linear;
     }
 }
 
@@ -32,6 +24,18 @@
     .hide-md-and-down {
         display: none;
     }
+}
+
+.pack {
+    height: 100vh !important;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+#msgColumn, #chatColumn, #othersColumn {
+    height: 100% !important;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 #othersColumn {
@@ -59,47 +63,70 @@
 }
 
 #msgBox img, #chatHead img {
-    width: 3.2rem;
-    height: 3.2rem;
+    width: 3.4rem;
+    height: 3.4rem;
+    border: double rgb(175, 132, 180) 4px;
 }
 
-#msgHead .mdi, #chatHead .mdi {
-    color: teal;
-    font-size: 30px;
-}
-
-#msgBox #msgList {
-    background-color: rgba(237, 245, 244, 0.39);
-    border-radius: 10px;
-    transition: cubic-bezier(0.6, -0.28, 0.735, 0.045) 0.1s;
-}
-
-#msgBox #msgList:hover {
+#msgHead {
     background-color: rgba(160, 192, 190, 0.267);
-    cursor: default;
+    box-shadow: 0px 11px 15px -7px rgba(0, 0, 0, 0.2), 0px 24px 38px 3px rgba(0, 0, 0, 0.14), 0px 9px 46px 8px rgba(0, 0, 0, 0.12);
+    border-radius: 10px;
 }
 
 #msgHead:hover, #chatHead:hover {
     cursor: default;
 }
 
-textarea::placeholder {
-    padding-top: 10px;
+#msgHead img {
+    border: white 4px double;
+    width: 3rem;
+    height: 3rem;
+}
+
+#msgHead input {
+    -webkit-animation: scale-in 0.2s linear both;
+    -o-animation: scale-in 0.2s linear both;
+    -moz-animation: scale-in 0.2s linear both;
+    animation: scale-in 0.2s linear both;
+}
+
+/* .hideSearch {
+    opacity: 1 !important;
+    height: 30px !important;
+} */
+
+#msgHead .mdi, #chatHead .mdi {
+    color: rgb(122, 59, 141);
+    font-size: 30px;
+}
+
+#msgHead a, #chatHead a {
+    box-shadow: none;
+    background-color: white;
+}
+
+#msgHead a:hover, #chatHead a:hover {
+    box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+    background-color: rgba(175, 141, 175, 0.63);
+}
+
+#msgBox #msgList {
+    background-color: rgba(237, 245, 244, 0.39);
+    border-radius: 10px;
+    height: 80px;
+    /* box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12); */
+    transition: cubic-bezier(0.6, -0.28, 0.735, 0.045) 0.2s;
+}
+
+#msgBox #msgList:hover {
+    background-color: rgba(160, 192, 190, 0.267);
+    cursor: default;
+    box-shadow: 0px 3px 3px -2px rgba(0, 0, 0, 0.2), 0px 3px 4px 0px rgba(0, 0, 0, 0.14), 0px 1px 8px 0px rgba(0, 0, 0, 0.12);
 }
 
 #msgBox hr {
     margin-left: 5rem;
-}
-
-#msgHead {
-    background-color: rgba(160, 192, 190, 0.267);
-    border-radius: 10px;
-}
-
-#msgHead img {
-    border: white 4px solid;
-    width: 3rem;
-    height: 3rem;
 }
 
 #chatHead {
@@ -107,6 +134,21 @@ textarea::placeholder {
     border-radius: 10px;
     border: rgba(160, 192, 190, 0.267) solid 1px;
     background-color: white;
+    box-shadow: 0px 11px 15px -7px rgba(0, 0, 0, 0.2), 0px 24px 38px 3px rgba(0, 0, 0, 0.14), 0px 9px 46px 8px rgba(0, 0, 0, 0.12);
+}
+
+#chatBox {
+    /* max-height: calc(100% - 12px); */
+    background-color: rgba(160, 192, 190, 0.267);
+    /* background-color: #f5f2ee; */
+}
+
+#chatBox .conversation-container {
+    max-height: calc(100vh - 68px);
+    box-shadow: inset 0 8px 8px -10px #000000;
+    overflow-x: hidden;
+    padding: 0 16px;
+    margin-bottom: 5px;
 }
 
 .inputBox {
@@ -207,46 +249,6 @@ textarea::placeholder {
     font-size: 24px;
 }
 
-/* ////////////////////////////////////////////// */
-
-#chatBox {
-    /* max-height: calc(100% - 12px); */
-    background-color: rgba(160, 192, 190, 0.267);
-    /* background-color: #f5f2ee; */
-}
-
-::-webkit-scrollbar {
-    transition: all .5s;
-    width: 3px;
-    height: 1px;
-    z-index: 10;
-}
-
-::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-    background: #c2bfbb;
-}
-
-#chatBox .conversation-container {
-    height: 450px;
-    /* max-height: calc(100% - 68px); */
-    box-shadow: inset 0 8px 8px -10px #000000;
-    overflow-x: hidden;
-    padding: 0 16px;
-    margin-bottom: 5px;
-}
-
-/* #chatBox .conversation-container:after {
-    content: "";
-    display: table;
-    clear: both;
-} */
-
-/* Messages */
-
 .message {
     color: #000;
     clear: both;
@@ -270,7 +272,7 @@ textarea::placeholder {
 
 .metadata {
     display: inline-block;
-    float: right;
+    /* float: right; */
     padding: 0 0 0 7px;
     position: relative;
     bottom: -4px;
@@ -281,45 +283,6 @@ textarea::placeholder {
     display: inline-block;
     text-shadow: black 0px 1px 3px;
 }
-
-/* 
-.metadata .tick {
-    display: inline-block;
-    margin-left: 2px;
-    position: relative;
-    top: 4px;
-    height: 16px;
-    width: 16px;
-}
-
-.metadata .tick svg {
-    position: absolute;
-    transition: .5s ease-in-out;
-}
-
-.metadata .tick svg:first-child {
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    -webkit-transform: perspective(800px) rotateY(180deg);
-    transform: perspective(800px) rotateY(180deg);
-}
-
-.metadata .tick svg:last-child {
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    -webkit-transform: perspective(800px) rotateY(0deg);
-    transform: perspective(800px) rotateY(0deg);
-}
-
-.metadata .tick-animation svg:first-child {
-    -webkit-transform: perspective(800px) rotateY(0);
-    transform: perspective(800px) rotateY(0);
-}
-
-.metadata .tick-animation svg:last-child {
-    -webkit-transform: perspective(800px) rotateY(-179.9deg);
-    transform: perspective(800px) rotateY(-179.9deg);
-} */
 
 .message:first-child {
     margin: 16px 0 8px;
@@ -364,29 +327,100 @@ textarea::placeholder {
     right: -10px;
 }
 
-@-webkit-keyframes slide-in {
+/* ////////////////////////////////////////////// */
+
+::-webkit-scrollbar {
+    transition: all .5s;
+    width: 3px;
+    height: 1px;
+    z-index: 10;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c2bfbb;
+}
+
+/* #chatBox .conversation-container:after {
+    content: "";
+    display: table;
+    clear: both;
+} */
+
+/* Messages */
+
+/* 
+.metadata .tick {
+    display: inline-block;
+    margin-left: 2px;
+    position: relative;
+    top: 4px;
+    height: 16px;
+    width: 16px;
+}
+
+.metadata .tick svg {
+    position: absolute;
+    transition: .5s ease-in-out;
+}
+
+.metadata .tick svg:first-child {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-transform: perspective(800px) rotateY(180deg);
+    transform: perspective(800px) rotateY(180deg);
+}
+
+.metadata .tick svg:last-child {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-transform: perspective(800px) rotateY(0deg);
+    transform: perspective(800px) rotateY(0deg);
+}
+
+.metadata .tick-animation svg:first-child {
+    -webkit-transform: perspective(800px) rotateY(0);
+    transform: perspective(800px) rotateY(0);
+}
+
+.metadata .tick-animation svg:last-child {
+    -webkit-transform: perspective(800px) rotateY(-179.9deg);
+    transform: perspective(800px) rotateY(-179.9deg);
+} */
+
+.transition {
+    transition: all linear 1s;
+    -moz-transition: all linear 1s;
+    -webkit-transition: all linear 1s;
+    -o-transition: all linear 1s;
+}
+
+@-webkit-keyframes scale-in {
     0% {
-        transform: translateX(768px);
+        transform: scale(3);
     }
     100% {
-        transform: translateX(0px)
+        transform: scale(1);
     }
 }
 
-@-o-keyframes slide-in {
+@-o-keyframes scale-in {
     0% {
-        transform: translateX(768px);
+        transform: scale(3);
     }
     100% {
-        transform: translateX(0px)
+        transform: scale(1);
     }
 }
 
-@keyframes slide-in {
+@keyframes scale-in {
     0% {
-        transform: translateX(768px);
+        transform: scale(3);
     }
     100% {
-        transform: translateX(0px)
+        transform: scale(1);
     }
 }

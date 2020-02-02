@@ -1,5 +1,5 @@
 
-import $ from "jquery";
+import $ from "jquery"
 import { AJYPost } from '../../../scripts/AjuwayaRequests'
 import { ConversationReplies } from './ConversationReplies'
 
@@ -7,9 +7,9 @@ import { ConversationReplies } from './ConversationReplies'
                         DISPLAY USER CONTACT LIST
 *****************************************************************************/
 
-export function ConversationLists () {
-    const uid = $('#uid').val();
-    const token =  $('#token').val();
+export function ConversationLists() {
+    const uid = $('#uid').val()
+    const token = $('#token').val()
 
     const last_time = ''
     const conversation_uid = ''
@@ -18,46 +18,50 @@ export function ConversationLists () {
         uid: uid,
         token: token,
         last_time: last_time,
-        conversation_uid: conversation_uid 
+        conversation_uid: conversation_uid
     }
-    $.baseUrl = $('#BASE_URL').val();
-    let apiBaseUrl = $.baseUrl + 'Aapi/conversationLists';
+    $.baseUrl = $('#BASE_URL').val()
+    let apiBaseUrl = $.baseUrl + 'Aapi/conversationLists'
 
-    AJYPost(apiBaseUrl,encodedata).then((result) => {
+    AJYPost(apiBaseUrl, encodedata).then((result) => {
 
-        if (result.conversations.length) {
+        if (result.conversations.length)
+        {
 
             $.each(result.conversations, (i, data) => {
 
-                const conversationsList = `<div id="msgList" key="${data.uid }" class="row no-gutters flex-nowrap align-items-center p-1">
-                                            <div>
-                                                <img src="${data.profile_pic}" alt="${data.username}" class="rounded mt-4">
-                                            </div>
-                                            <div class="py-1 pl-3" style="max-width:82%;">
-                                                <p class="text-right my-0 mr-3"><span class="small "><small>Jan 23, 02:25PM</small></span></p>
-                                                <h6 class="my-0 font-weight-bolder">${data.name}</h6>
-                                                <p class="small my-0 text-muted text-truncate pr-2">
-                                                ${data.lastReply.reply}
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <hr>`
+                const conversationsList = `
+                        <div id="msgList" key="${ data.uid }" class="row no-gutters flex-nowrap align-items-center p-1">
+                            <div>
+                                <img src="${ data.profile_pic }" alt="${ data.username }" class="rounded">
+                            </div>
+                            <div class="py-1 pl-2 flex-grow-1" style="max-width:85%;">
+                                <div class="row no-gutters flex-nowrap justify-content-between align-items-center">
+                                    <h6 class="mb-1 font-weight-bolder text-truncate" style="max-width:60%;">${ data.name }</h6>
+                                    <p class="mb-1 text-right mr-3 text-nowrap"><span class="small "><small>Jan 23, 02:25PM</small></span></p>
+                                </div>
+                                <p class="small my-0 text-muted text-truncate pr-2">
+                                ${ data.lastReply.reply }
+                                </p>
+                            </div> 
+                        </div>
+                        <hr class="my-3">
+                `
                 let msgBox = document.getElementById('msgBox')
                 msgBox.innerHTML += conversationsList
             })
 
 
-            var msgColumn = document.getElementById("msgColumn")
-            var chatColumn = document.getElementById("chatColumn")
-            var returnBtn = document.querySelector("#chatColumn #return")
-            var msgList = document.querySelectorAll("#msgList")
-            var currentChatImage = document.querySelector("#chatHead img")
-            var currentChatName = document.querySelector("#chatHead h6")
-            var html = document.querySelector("html")
-            var chatBox = document.querySelector("#chatBox .conversation-container")
+            let msgColumn = document.getElementById("msgColumn")
+            let chatColumn = document.getElementById("chatColumn")
+            let returnBtn = document.querySelector("#chatColumn #return")
+            let searchBtn = document.querySelector("#msgColumn #msgSearch")
+            let sendBtn = document.querySelector("#chatColumn .send")
+            let currentChatImage = document.querySelector("#chatHead img")
+            let currentChatName = document.querySelector("#chatHead h6")
 
-            msgBox.addEventListener("click", getUserMessage, false)
-            function getUserMessage(e) {
+            msgBox.addEventListener("click", getActiveMessage, false)
+            function getActiveMessage(e) {
                 var currentUser = result.conversations.find(function (item) {
                     var neededTarget = e.target.closest('#msgList')
                     if (item.uid === neededTarget.getAttribute('key'))
@@ -70,8 +74,8 @@ export function ConversationLists () {
                                         THIS IS THE ONLY CODE I ADDED
                 *****************************************************************************/
                 //This block helps in changing URL for the user message view
-                let page_url = $.baseUrl + 'message/' + currentUser.username;
-                window.history.pushState('', "Personal Message View", page_url);
+                let page_url = $.baseUrl + 'message/' + currentUser.username
+                window.history.pushState('', "Personal Message View", page_url)
                 $('#public_username').val(currentUser.username)
                 $('#conversationId').val(currentUser.c_id)
                 ConversationReplies()
@@ -79,8 +83,10 @@ export function ConversationLists () {
                                         THIS IS THE ONLY CODE I ADDED
                 *****************************************************************************/
 
-                currentChatImage.setAttribute("src",currentUser.uid )
-                currentChatName.textContent = currentUser.name
+                currentChatImage.setAttribute("src", currentUser.uid)
+                currentChatName.textContent = currentUser.name.length > 20
+                    ? currentUser.name.slice(0, 20) + "..."
+                    : currentUser.name
                 if (window.matchMedia("(max-width: 768px)").matches)
                 {
                     msgColumn.classList.add("hide-sm-and-down")
@@ -91,13 +97,18 @@ export function ConversationLists () {
                 msgColumn.classList.remove("hide-sm-and-down")
                 chatColumn.classList.add("hide-sm-and-down")
                 let page_url = $.baseUrl + 'message/'
-                window.history.pushState('', "Back Conversation View", page_url);
+                window.history.pushState('', "Back Conversation View", page_url)
             }
 
+            searchBtn.onclick = function () {
+                document.querySelector("#msgColumn .input").classList.toggle("d-none")
+            }
 
-        } else {
+        } else
+        {
             //User have no contact List
+            return "You currently have no messages. Add some friends to begin!"
         }
-        
-    });
+
+    })
 }

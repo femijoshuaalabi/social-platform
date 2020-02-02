@@ -16,29 +16,36 @@
     <!-- State html here -->
     <div class="container-fluid">
 
-        <div class="row py-2">
+        <div class="row py-2 pack">
             <!-- COL 1, MESSAGES CONTAINER-->
             <div id="msgColumn" class="col-md-4 col-lg-4">
-                <div id="msgHead" class="row no-gutters align-items-center p-2">
-                    <img src="../assets/img/james-stewart-man-person-actor-53487.jpeg" alt="profile image"
-                        class="rounded-circle">
-                    <span class="flex-grow-1 ml-3 font-weight-bold">Messages</span>
-                    <span class="mdi mdi-chevron-down mr-3"></span>
+                <div id="msgHead">
+                    <div class="row no-gutters flex-nowrap align-items-center p-2">
+                        <img src="../assets/img/james-stewart-man-person-actor-53487.jpeg" alt="profile image"
+                            class="rounded-circle">
+                        <span class="flex-grow-1 ml-3 font-weight-bold">Messages</span>
+                        <a id="msgSearch" class="btn-floating btn-sm"><i class="mdi mdi-magnify mr-3"></i></a>
+                        <a class="btn-floating btn-sm"><i class="mdi mdi-chevron-down mr-3"></i></a>
+                    </div>
+                    <div class="input p-2 d-none">
+                        <input class="form-control" placeholder="Search Messages..." type="search" autofocus
+                            autocomplete="on">
+                    </div>
                 </div>
 
                 <hr>
                 <div class="container-fluid">
-
                     <div id="msgBox" class=""></div>
                 </div>
-
             </div>
 
             <!-- COL 2, CHAT CONTAINER -->
             <div id="chatColumn" class="col-md-8 col-lg-5 border-left hide-sm-and-down">
 
                 <div id="chatHead" class="d-flex align-items-center py-2 pl-2 pr-4">
-                    <span id="return" class="mdi mdi-arrow-left pr-4  d-md-none"></span>
+                    <a class="btn-floating btn-sm btn-light pr-4 d-md-none">
+                        <i id="return" class="mdi mdi-arrow-left"></i>
+                    </a>
                     <img src="../assets/img/pexels-photo-5.jpeg" alt="user image" class="rounded">
                     <div class="py-1 pl-3 flex-grow-1">
                         <h6 class="my-0 font-weight-bolder">Andrew Malik</h6>
@@ -46,14 +53,14 @@
                             <small>Last seen: 03:28PM</small>
                         </p>
                     </div>
-                    <span class="mdi mdi-apps"></span>
-                    <span class="mdi mdi-dots-vertical"></span>
+                    <a class="btn-floating btn-sm btn-light mr-0"><i class="mdi mdi-apps"></i></a>
+                    <a class="btn-floating btn-sm btn-light mr-0"><i class="mdi mdi-dots-vertical"></i></a>
                 </div>
                 <hr>
 
                 <!-- CHAT BOX -->
                 <div id="chatBox" class="">
-                    <div class="conversation-container" id="conversation-container">
+                    <div class="conversation-container pack" id="conversation-container">
                         
                     </div>
 
@@ -66,19 +73,19 @@
                                     fill="#7d8489" />
                             </svg>
                         </div>
-                        <input type="text" class="input-msg" id="conversationReply" name="input" placeholder="Type a message"
-                            autocomplete="off" />
+                        <input id="conversationReply" type="text" class="input-msg" name="input"
+                            placeholder="Type a message" autocomplete="off"></input>
                         <div class="rightIcon">
                             <i class="mdi mdi-paperclip"></i>
                         </div>
                         <div class="rightIcon">
                             <i class="mdi mdi-camera"></i>
                         </div>
-                        <button class="send" id="sendButton">
+                        <a id="sendButton" class="send btn-floating my-0">
                             <div class="circle">
                                 <i class="mdi mdi-send"></i>
                             </div>
-                        </button>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -118,9 +125,9 @@
     </footer>
     
     <script src="<?php echo BASE_URL ?>build/app.bundle.js"></script>
-    <!-- <script src="../mdb/js/jquery-3.4.1.min.js"></script> -->
-    <!-- <script src="../mdb/js/bootstrap.min.js"></script> -->
-    <!-- <script src="../mdb/js/mdb.min.js"></script> -->
+    <script src="<?php echo BASE_URL ?>build/dist/mdb/js/jquery-3.4.1.min.js"></script>
+    <script src="<?php echo BASE_URL ?>build/dist/mdb/js/bootstrap.min.js"></script>
+    <script src="<?php echo BASE_URL ?>build/dist/mdb/js/mdb.min.js"></script>
     <!-- <script src="<?php echo BASE_URL ?>src/scripts/main.js"></script> -->
 </div>
   </body>
