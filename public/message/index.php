@@ -53,67 +53,11 @@
 
                 <!-- CHAT BOX -->
                 <div id="chatBox" class="">
-                    <div class="conversation-container">
-                        <div class="message sent">
-                            Hey bro, what's up? See, i need your help.
-                            I want you to tell me something i don't already know!
-                            <span class="metadata">
-                                <span class="time">2:45pm</span>
-                                <!-- <span class="tick">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="15"
-                                                id="msg-dblcheck-ack" x="2063" y="2076">
-                                                <path
-                                                    d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.88a.32.32 0 0 1-.484.032l-.358-.325a.32.32 0 0 0-.484.032l-.378.48a.418.418 0 0 0 .036.54l1.32 1.267a.32.32 0 0 0 .484-.034l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.88a.32.32 0 0 1-.484.032L1.892 7.77a.366.366 0 0 0-.516.005l-.423.433a.364.364 0 0 0 .006.514l3.255 3.185a.32.32 0 0 0 .484-.033l6.272-8.048a.365.365 0 0 0-.063-.51z"
-                                                    fill="#4fc3f7" />
-                                            </svg>
-                                        </span> -->
-                            </span>
-                        </div>
-                        <div class="message received">
-                            Okay try this...
-                            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quam delectus molestias
-                            provident molestiae similique distinctio dolorum enim eaque deleniti rerum ipsa
-                            assumenda illum cum libero nemo est, fuga esse facilis!
-                            <span class="metadata">
-                                <span class="time">2:48pm</span>
-                            </span>
-                        </div>
-                        <div class="message sent">
-                            Damn, what the hell. Are you drunk?
-                            <span class="metadata">
-                                <span class="time">3:03pm</span>
-                            </span>
-                        </div>
-                        <div class="message received">
-                            <span id="random">Nope, you got what you asked for. So how are we hanging out this
-                                evening?
-                            </span>
-                            <span class="metadata">
-                                <span class="time">3:14pm</span>
-                            </span>
-                        </div>
-                        <div class="message sent">
-                            Not hard! You only need a tick rope(noose) and a very strong spot on the corridor
-                            ceiling.
-                            <span class="metadata">
-                                <span class="time">3:20pm</span>
-                            </span>
-                        </div>
-                        <div class="message received">
-                            <span id="random" class="mdi mdi-emoticon-angry orange-text">!!!
-                                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ab alias, amet cumque tenetur
-                                voluptate, eaque porro vel quas commodi optio ex dolore, neque provident iusto maxime.
-                                voluptate, eaque porro vel quas commodi optio ex dolore, neque provident iusto maxime.
-                                voluptate, eaque porro vel quas commodi optio ex dolore, neque provident iusto maxime.
-                                voluptate, eaque porro vel quas commodi optio ex dolore, neque provident iusto maxime.
-                            </span>
-                            <span class="metadata">
-                                <span class="time">3:22pm</span>
-                            </span>
-                        </div>
+                    <div class="conversation-container" id="conversation-container">
+                        
                     </div>
 
-                    <form class="inputBox pb-2">
+                    <div class="inputBox pb-2">
                         <div class="emoji">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" id="smiley" x="3147"
                                 y="3209">
@@ -122,20 +66,20 @@
                                     fill="#7d8489" />
                             </svg>
                         </div>
-                        <input type="text" class="input-msg" name="input" placeholder="Type a message"
-                            autocomplete="off"></input>
+                        <input type="text" class="input-msg" id="conversationReply" name="input" placeholder="Type a message"
+                            autocomplete="off" />
                         <div class="rightIcon">
                             <i class="mdi mdi-paperclip"></i>
                         </div>
                         <div class="rightIcon">
                             <i class="mdi mdi-camera"></i>
                         </div>
-                        <button class="send">
+                        <button class="send" id="sendButton">
                             <div class="circle">
                                 <i class="mdi mdi-send"></i>
                             </div>
                         </button>
-                    </form>
+                    </div>
                 </div>
             </div>
 
@@ -170,13 +114,14 @@
         <input type="hidden" id="name" value="<?php echo $this->sessionName; ?>"/>
         <input type="hidden" id="token" value="<?php echo $this->sessionToken; ?>"/>
         <input type="hidden" id="public_username" value="<?php echo $this->public_username; ?>" />
+        <input type="hidden" id="conversationId" value="" />
     </footer>
     
     <script src="<?php echo BASE_URL ?>build/app.bundle.js"></script>
     <!-- <script src="../mdb/js/jquery-3.4.1.min.js"></script> -->
     <!-- <script src="../mdb/js/bootstrap.min.js"></script> -->
     <!-- <script src="../mdb/js/mdb.min.js"></script> -->
-    <script src="<?php echo BASE_URL ?>src/scripts/main.js"></script>
+    <!-- <script src="<?php echo BASE_URL ?>src/scripts/main.js"></script> -->
 </div>
   </body>
 </html>
