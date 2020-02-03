@@ -1,7 +1,9 @@
 /* @media (min-width: 576px) { */
 
 /* } */
-
+.display_none{
+    display: none;
+}
 @media (max-width: 576px) {
     .hide-xs {
         display: none;

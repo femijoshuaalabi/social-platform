@@ -215,6 +215,24 @@ function internalGetImagePath($id) {
 }
 
 
+/* ### Friend Valid Check ### */
+function internalFriendsCheck($uid, $fid) {
+    $sql = "SELECT role FROM friends WHERE friend_one=:uid AND friend_two=:fid";
+    try {
+        $db = getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam("uid", $uid);
+        $stmt->bindParam("fid", $fid);
+        $stmt->execute();
+        $friendsCheck = $stmt->fetchAll(PDO::FETCH_OBJ);
+        $db = null;
+        return $friendsCheck[0]->role;
+    } catch (PDOException $e) {
+        echo '{"error":{"text":' . $e->getMessage() . '}}';
+    }
+}
+
+
 
 
 

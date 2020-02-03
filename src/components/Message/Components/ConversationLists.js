@@ -3,6 +3,8 @@ import $ from "jquery"
 import { AJYPost } from '../../../scripts/AjuwayaRequests'
 import { ConversationReplies } from './ConversationReplies'
 
+import { Networks } from '../../Networks/Networks'
+
 /*****************************************************************************
                         DISPLAY USER CONTACT LIST
 *****************************************************************************/
@@ -55,7 +57,6 @@ export function ConversationLists() {
             let msgColumn = document.getElementById("msgColumn")
             let chatColumn = document.getElementById("chatColumn")
             let returnBtn = document.querySelector("#chatColumn #return")
-            let searchBtn = document.querySelector("#msgColumn #msgSearch")
             let sendBtn = document.querySelector("#chatColumn .send")
             let currentChatImage = document.querySelector("#chatHead img")
             let currentChatName = document.querySelector("#chatHead h6")
@@ -100,10 +101,6 @@ export function ConversationLists() {
                 window.history.pushState('', "Back Conversation View", page_url)
             }
 
-            searchBtn.onclick = function () {
-                document.querySelector("#msgColumn .input").classList.toggle("d-none")
-            }
-
         } else
         {
             //User have no contact List
@@ -111,4 +108,28 @@ export function ConversationLists() {
         }
 
     })
+
+    //I move this out of if statement block so it can fire both when user have contact list or not
+    let searchBtn = document.querySelector("#msgColumn #msgSearch")
+    searchBtn.onclick = function () {
+        document.querySelector("#msgColumn .input").classList.toggle("d-none")
+    }
+
+     /*****************************************************************************
+                                USER FRIENDS LIST BLOCK
+        Note: This block is important because it will help use to choose from 
+        their friend list if they don't have contact list
+    *****************************************************************************/
+    let firSearchBtn = document.querySelector("#friSearch")
+    firSearchBtn.onclick = function (e) {
+        document.querySelector(".friendSearchBox").classList.toggle("d-none")
+        if(!$('.friendSearchBox').hasClass("d-none")){
+            //Excute User Friend List
+            $('#displayUserFriendsList').html('')
+            // Network Class is under Networks/network, Please work on it so it can work same way as contactlist works
+            let FriendsList = new Networks()
+            FriendsList.UserNetworksForMessages()
+        }
+    }
+
 }

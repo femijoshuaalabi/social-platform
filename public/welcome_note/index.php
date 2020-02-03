@@ -23,7 +23,7 @@
                         <h2 class="h2">Account Created Successfully</h2>
                         <p><strong><?php echo $_SESSION['name'] ?></strong>, Welcome to Corpersmeet Inc. We are really glad to have you on our platform. kindly update your details to get the most out of your experience on this platform. We hope you have a swell time.</p>
                         <br>
-                        <button class="btn btn-default" id="continue-to-homepage" style="margin: 50px 0px;">Continue</button>
+                        <a class="btn btn-default" href="<?php echo BASE_URL ?>home" id="continue-to-homepage" style="margin: 50px 0px;">Continue</a>
                         </div>
                     </div>
                 </div>
