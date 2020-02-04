@@ -40,7 +40,7 @@ class PagesControl extends Controller {
     //LOGIN QUERIES ENDS HERE
 
     public function getMessages($param1 = null, $param2 = null,$param3 = null){
-        $this->view->render($this->PageName.'/getMessages');
+        $this->view->render($this->PageName.'/index');
     }
 
     //PROFILE QUERIES START HERE

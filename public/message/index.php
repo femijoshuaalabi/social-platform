@@ -6,7 +6,8 @@
     <meta name="theme-color" content="#000000" />
     <title>Ajuwaya Connect</title>
         <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"> -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css">
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css"> -->
+    <link rel="stylesheet" href="<?php echo BASE_URL ?>build/plugins/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="<?php echo BASE_URL ?>build/dist/mdb/css/bootstrap.min.css">
     <link rel="stylesheet" href="<?php echo BASE_URL ?>build/dist/mdb/css/mdb.min.css">
     <link rel="stylesheet" href="<?php echo BASE_URL ?>public/message/main.css">
@@ -24,8 +25,8 @@
                         <img src="../assets/img/james-stewart-man-person-actor-53487.jpeg" alt="profile image"
                             class="rounded-circle">
                         <span class="flex-grow-1 ml-3 font-weight-bold">Messages</span>
-                        <a id="msgSearch" class="btn-floating btn-sm"><i class="mdi mdi-magnify mr-3"></i></a>
-                        <a class="btn-floating btn-sm"><i class="mdi mdi-chevron-down mr-3"></i></a>
+                        <a id="msgSearch" class="btn-floating btn-sm" ><i class="mdi mdi-magnify mr-3"></i></a>
+                        <a id="friSearch" class="btn-floating btn-sm"><i class="mdi mdi-chevron-down mr-3"></i></a>
                     </div>
                     <div class="input p-2 d-none">
                         <input class="form-control" placeholder="Search Messages..." type="search" autofocus
@@ -58,9 +59,10 @@
                             class="mdi mdi-arrow-left"></i></a>
                     <img src="../assets/img/pexels-photo-5.jpeg" alt="user image" class="rounded">
                     <div class="py-1 pl-3 flex-grow-1">
-                        <h6 class="my-0 font-weight-bolder">Andrew Malik</h6>
+                        <h6 class="my-0 font-weight-bolder" id="visited_Name"></h6>
                         <p class="small my-0 text-muted">
-                            <small>Last seen: 03:28PM</small>
+                            <small id="message_last_seen"></small>
+                            <small id="message_is_typing" class="display_none"></small>
                         </p>
                     </div>
                     <a class="btn-floating btn-sm btn-light mr-0"><i class="mdi mdi-apps"></i></a>
@@ -116,7 +118,6 @@
             </div>
         </div>
     </div>
-
 
 
 

@@ -33,7 +33,7 @@ export function ConversationLists() {
         {
 
             $.each(result.conversations, (i, data) => {
-                console.log(data)
+
                 const conversationsList = `
                         <div id="msgList" key="${ data.uid }" class="row no-gutters flex-nowrap align-items-center p-1">
                             <div>
