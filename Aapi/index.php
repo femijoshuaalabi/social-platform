@@ -33,10 +33,18 @@ $app->post('/ValidateEmailWithPin', 'ValidateEmailWithPin'); /* Validate Email W
 
 $app->post('/conversationLists', 'conversationLists'); /* Message conversation List */
 $app->post('/conversationReplies', 'conversationReplies'); /* Message conversation Replies */
+$app->post('/conversationNewReplies', 'conversationNewReplies'); /* Conversation New Replies */
 $app->post('/ReplyConversation', 'ReplyConversation'); /* Reply Conversation */
 $app->post('/istypingStatus', 'istypingStatus'); /* is typing  */
 $app->post('/istypingStatusRemove', 'istypingStatusRemove'); /* is typing Remove  */
-$app->post('/istypingStatusUpdate', 'istypingStatusUpdate'); /* is typing Update */
+$app->post('/istypingStatusUpdate', 'istypingStatusUpdate'); /* is typing Update */ 
+$app->post('/onlineStatus', 'onlineStatus'); /* online Status */ 
+
+$app->post('/friendsList', 'friendsList'); /* User friends List */
+$app->post('/suggestedFriends', 'suggestedFriends'); /* Suggested Friends */  
+$app->post('/addFriend', 'addFriend'); /* Add Friend */
+
+$app->post('/onlineStatusUpdate', 'onlineStatusUpdate'); /* online Status Update */ 
 
 $app->run();
 
@@ -89,6 +97,10 @@ function conversationReplies() {
     require 'Pages/Message/conversationReplies.php';
 }
 
+function conversationNewReplies() {
+    require 'Pages/Message/conversationNewReplies.php';
+}
+
 /*User Reply to Messages*/
 function ReplyConversation(){
     require 'Pages/Message/ReplyConversation.php'; 
@@ -107,6 +119,147 @@ function istypingStatusRemove() {
 function istypingStatusUpdate() {
     require 'Pages/Message/istypingStatusUpdate.php';
 }
+
+function onlineStatusUpdate() {
+    require 'Pages/Message/onlineStatusUpdate.php';
+}
+
+function onlineStatus() {
+    require 'Pages/Message/onlineStatus.php';
+}
+
+/*****************************************************************************
+                                 NEWSFEED FUNCTION
+*****************************************************************************/
+
+function suggestedFriends() {
+    require 'Pages/Networks/suggestedFriends.php';
+}
+
+function addFriend() {
+    $request = \Slim\Slim::getInstance()->request();
+    $data = json_decode($request->getBody());
+    $uid = $data->uid;
+    $fid = $data->fid;
+
+    try {
+        $key = md5(SITE_KEY . $data->uid);
+        if ($key == $data->token && $uid > 0) {
+
+            $db = getDB();
+            $role = "fri";
+            $time = time();
+            $sql = "SELECT friend_id FROM friends WHERE friend_one=:uid AND friend_two=:fid AND role=:role";
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam("uid", $uid, PDO::PARAM_INT);
+            $stmt->bindParam("fid", $fid, PDO::PARAM_INT);
+            $stmt->bindParam("role", $role, PDO::PARAM_STR);
+            $stmt->execute();
+
+            $count = $stmt->rowCount();
+            if ($count == 0 && $uid > 0 && $fid > 0 && $uid != $fid) {
+                $sql1 = "INSERT INTO friends(friend_one,friend_two,role,created) VALUES (:uid,:fid,:role,:time)";
+                $stmt1 = $db->prepare($sql1);
+                $stmt1->bindParam("uid", $uid, PDO::PARAM_INT);
+                $stmt1->bindParam("fid", $fid, PDO::PARAM_INT);
+                $stmt1->bindParam("role", $role, PDO::PARAM_STR);
+                $stmt1->bindParam("time", $time);
+                $stmt1->execute();
+                $sql2 = "UPDATE users SET friend_count=friend_count+1 WHERE uid=:uid";
+                $stmt2 = $db->prepare($sql2);
+                $stmt2->bindParam("uid", $uid, PDO::PARAM_INT);
+                $stmt2->execute();
+
+                $db = null;
+                echo '{"friend": [{"status":"1"}]}';
+
+
+                $mainUserDetails = internalUserDetails($uid);
+                $mainUser = $mainUserDetails[0]->name;
+                $mainUsername = $mainUserDetails[0]->username;
+
+                $followUserDetails = internalUserDetails($fid);
+                $to = $followUserDetails[0]->email;
+
+                $followName = $followUserDetails[0]->name;
+                $followUser = $followUserDetails[0]->username;
+                $messageUid = $followUserDetails[0]->uid;
+                $emailNotifications = $followUserDetails[0]->emailNotifications;
+                $applicationName = SITE_NAME;
+                if (SMTP_CONNECTION > 0 && $uid != $fid && $emailNotifications > 0) {
+                    $friendLink = BASE_URL . $mainUsername;
+                    $subject = $mainUser . ' is now following you on ' . $applicationName;
+                    $body = "Hello " . $followName . ",<br/> <br/>" . $mainUser . " is now following you on " . $applicationName . ". <br/><br/><a href='" . $friendLink . "'>Profile Link</a><br/><br/>Support
+                    <br/>" . $applicationName . "<br/>" . BASE_URL . "<br/><br/>
+                    You are receiving this because you are subscribed to notifications on our website.
+                    <a href='" . BASE_URL . "settings.php'>Edit your email alerts</a>";
+
+                    sendMail($to, $subject, $body);
+                }
+            }
+        }
+    } catch (PDOException $e) {
+        echo '{"error":{"text":' . $e->getMessage() . '}}';
+    }
+}
+
+function friendsList() {
+    $request = \Slim\Slim::getInstance()->request();
+    $data = json_decode($request->getBody());
+    $page = $data->page;
+    $rowsPerPage = $data->rowsPerPage;
+
+
+    if ($page) {
+        //$page=$page+1;
+        $offset = ($page - 1) * $rowsPerPage;
+        $con = $offset . "," . $rowsPerPage;
+    } else {
+        $con = $rowsPerPage;
+    }
+
+    $public_uid = $data->uid;
+    $username = $data->username;
+
+    /* Public Username Check */
+    if ($data->username) {
+        $public_uid = internalUsernameDetails($data->username);
+    } else {
+        $public_uid = $data->uid;
+    }
+
+    $sql = "SELECT '' as status,U.username,U.name,U.uid,U.email,U.profile_pic,U.present_state,U.present_lga,U.occupation FROM users U, friends F WHERE U.status='1' AND U.uid=F.friend_two AND F.friend_one=:uid AND F.role='fri' ORDER BY F.friend_id DESC LIMIT $con";
+    try {
+        $key = md5(SITE_KEY . $data->uid);
+        if ($key == $data->token) {
+
+            $db = getDB();
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam("uid", $public_uid, PDO::PARAM_INT);
+            $stmt->execute();
+            $friendsList = $stmt->fetchAll(PDO::FETCH_OBJ);
+            $db = null;
+            $friendsListCount = count($friendsList);
+            for ($z = 0; $z < $friendsListCount; $z++) {
+                $friendsList[$z]->role = internalFriendsCheck($data->uid, $friendsList[$z]->uid);
+                $friendsList[$z]->profile_pic = profilePic($friendsList[$z]->profile_pic);
+                if (empty($friendsList[$z]->name)) {
+                    $friendsList[$z]->name = $friendsList[$z]->username;
+                }
+            }
+            echo '{"friendsList": ' . json_encode($friendsList) . '}';
+        }
+    } catch (PDOException $e) {
+        echo '{"error":{"text":' . $e->getMessage() . '}}';
+    }
+}
+
+
+
+
+
+
+
 
 
 

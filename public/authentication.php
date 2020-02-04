@@ -44,7 +44,7 @@ $_SESSION['language_labels']=$_GET['language_labels'];
 
 
 
-$url=BASE_URL.'message';
+$url=BASE_URL.'home';
 
 header("location:$url");
 

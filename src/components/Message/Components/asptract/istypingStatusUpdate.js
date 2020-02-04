@@ -15,17 +15,20 @@ export function istypingStatusUpdate() {
     $.baseUrl = $('#BASE_URL').val()
     let apiBaseUrl = $.baseUrl + 'Aapi/istypingStatusUpdate'
 
+
     AJYPost(apiBaseUrl, encodedata).then((result) => {
         if (result.istyping.length)
         {
             if (result.istyping == 'Yes')
             {
                 //Display typing animation here
-                //    console.log('user is typing')
+                $('#message_last_seen').hide()
+                $('#message_is_typing').show().html('typing...')
             } else
             {
                 //Remove typing animation here
-                // console.log('user stopped typing')
+                $('#message_last_seen').show()
+                $('#message_is_typing').html('').hide()
             }
         }
     })

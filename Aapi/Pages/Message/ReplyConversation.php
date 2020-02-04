@@ -13,8 +13,7 @@ $ip=$_SERVER['REMOTE_ADDR'];
 
 try {
     $key=md5(SITE_KEY.$data->uid);
-    if($key==$data->token && $uid > 0 && $c_id > 0)
-    {
+    if($key==$data->token && $uid > 0 && $c_id > 0) {
         $db = getDB();
         $sql = "INSERT INTO conversation_reply (user_id_fk,reply,ip,time,c_id_fk,lat,lang,uploads) VALUES (:uid,:reply,:ip,:time,:c_id,:lat,:lang,:uploads)";
         $stmt = $db->prepare($sql);

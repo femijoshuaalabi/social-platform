@@ -1,8 +1,10 @@
-import $ from "jquery";
-import { AJYPost,AJYGet } from './AjuwayaRequests'
+import $ from "jquery"
+import { onlineStatusUpdate } from '../components/onlineStatus'
 import { RegistrationForm } from '../components/Registration/RegistrationForm'
 import { LoginBlock } from '../components/Login/LoginBlock'
 import { MessageBlock } from '../components/Message/MessageBlock'
+
+import { FriendSuggession } from '../components/Networks/FriendSuggession'
 
 //Variable
 let PAGE_NAME = $('#PAGE_NAME').val();
@@ -23,8 +25,14 @@ export function AjuwayaSeperator(){
         case "message":
             Message()
             break;
+        case "home":
+            FriendSuggestionList()
+            break
     }
-    
+
+    if (typeof $('#token').val() !== 'undefined'){
+        UserOnlineUpdateStatus()
+    }
 }
 
 /*****************************************************************************
@@ -43,10 +51,26 @@ function Register(){
 }
 
 /*****************************************************************************
+                        USER ONLINE UPDATE STATUS
+*****************************************************************************/
+function UserOnlineUpdateStatus(){
+    setInterval(() => {
+        onlineStatusUpdate()
+    },4000)
+}
+
+/*****************************************************************************
                             MESSEGING METHODS
 *****************************************************************************/
 function Message(){
     let message = new MessageBlock();
+}
+
+/*****************************************************************************
+                    HOME, NEWSFEED, FRIEND SUGGESIONS
+*****************************************************************************/
+function FriendSuggestionList(){
+    let suggestions = new FriendSuggession()
 }
 
 /*****************************************************************************
