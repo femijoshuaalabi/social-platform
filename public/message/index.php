@@ -16,7 +16,7 @@
     <!-- State html here -->
     <div class="container-fluid">
 
-        <div class="row py-2 pack">
+        <div class="row pack">
             <!-- COL 1, MESSAGES CONTAINER-->
             <div id="msgColumn" class="col-md-4 col-lg-4">
                 <div id="msgHead">
@@ -25,7 +25,7 @@
                             class="rounded-circle">
                         <span class="flex-grow-1 ml-3 font-weight-bold">Messages</span>
                         <a id="msgSearch" class="btn-floating btn-sm"><i class="mdi mdi-magnify mr-3"></i></a>
-                        <a id="friSearch" class="btn-floating btn-sm"><i class="mdi mdi-chevron-down mr-3"></i></a>
+                        <a class="btn-floating btn-sm"><i class="mdi mdi-chevron-down mr-3"></i></a>
                     </div>
                     <div class="input p-2 d-none">
                         <input class="form-control" placeholder="Search Messages..." type="search" autofocus
@@ -34,35 +34,33 @@
 
                     <div class="friendSearchBox p-2 d-none">
                         <div class="card" style="height: 70vh; padding: 10px">
-                            <input style="margin-top: 10px" class="form-control" placeholder="Search Friends..." type="search" autofocus
-                                autocomplete="on">
+                            <input style="margin-top: 10px" class="form-control" placeholder="Search Friends..."
+                                type="search" autofocus autocomplete="on">
                             <div id="displayUserFriendsList">
-                                
+
                             </div>
-                            
+
                         </div>
                     </div>
                 </div>
 
                 <hr>
-                <div class="container-fluid">
+                <div class="container-fluid scroller">
                     <div id="msgBox" class=""></div>
                 </div>
             </div>
 
             <!-- COL 2, CHAT CONTAINER -->
-            <div id="chatColumn" class="col-md-8 col-lg-5 border-left hide-sm-and-down">
+            <div id="chatColumn" class="col-md-8 col-lg-5 border-left hide-sm-and-down px-0">
 
                 <div id="chatHead" class="d-flex align-items-center py-2 pl-2 pr-4">
-                    <a class="btn-floating btn-sm btn-light pr-4 d-md-none">
-                        <i id="return" class="mdi mdi-arrow-left"></i>
-                    </a>
+                    <a class="btn-floating btn-sm btn-light pr-4 d-md-none"><i id="return"
+                            class="mdi mdi-arrow-left"></i></a>
                     <img src="../assets/img/pexels-photo-5.jpeg" alt="user image" class="rounded">
                     <div class="py-1 pl-3 flex-grow-1">
                         <h6 class="my-0 font-weight-bolder">Andrew Malik</h6>
                         <p class="small my-0 text-muted">
-                            <small id="message_last_seen"></small>
-                            <small id="message_is_typing" class="display_none"></small>
+                            <small>Last seen: 03:28PM</small>
                         </p>
                     </div>
                     <a class="btn-floating btn-sm btn-light mr-0"><i class="mdi mdi-apps"></i></a>
@@ -72,7 +70,7 @@
 
                 <!-- CHAT BOX -->
                 <div id="chatBox" class="">
-                    <div class="conversation-container pack" id="conversation-container">
+                    <div class="conversation-container" id="conversation-container">
                         
                     </div>
 
