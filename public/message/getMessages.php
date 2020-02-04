@@ -128,7 +128,6 @@
     <script src="<?php echo BASE_URL ?>build/dist/mdb/js/jquery-3.4.1.min.js"></script>
     <script src="<?php echo BASE_URL ?>build/dist/mdb/js/bootstrap.min.js"></script>
     <script src="<?php echo BASE_URL ?>build/dist/mdb/js/mdb.min.js"></script>
-    <!-- <script src="<?php echo BASE_URL ?>src/scripts/main.js"></script> -->
 </div>
   </body>
 </html>
