@@ -58,7 +58,7 @@
             <!-- COL 2, CHAT CONTAINER -->
             <div id="chatColumn" class="col-md-7 col-lg-5 border-left hide-sm-and-down px-0 px-sm-3">
 
-                <div class="placeOwner d-none">
+                <div class="placeOwner d-none h-100">
                     <div id="chatHead" class="d-flex align-items-center py-2 pl-2 pr-4">
                         <a class="icon btn-floating btn-sm btn-light pr-4 d-md-none"><i id="return"
                                 class="mdi mdi-arrow-left"></i></a>
