@@ -42,7 +42,7 @@ export function ConversationLists() {
                             <div class="py-1 pl-2 flex-grow-1" style="max-width:85%;">
                                 <div class="row no-gutters flex-nowrap justify-content-between align-items-center">
                                     <h6 class="mb-1 font-weight-bolder text-truncate" style="max-width:60%;">${ data.name }</h6>
-                                    <p class="mb-1 text-right mr-3 text-nowrap"><span class="small "><small>${TimeConverter(data.time)}</small></span></p>
+                                    <p class="mb-1 text-right mr-3 text-nowrap"><span class="small "><small>${TimeConverter(data.time) }</small></span></p>
                                 </div>
                                 <p class="small my-0 text-muted text-truncate pr-2">
                                 ${ data.lastReply.reply }
@@ -59,12 +59,18 @@ export function ConversationLists() {
             let msgColumn = document.getElementById("msgColumn")
             let chatColumn = document.getElementById("chatColumn")
             let returnBtn = document.querySelector("#chatColumn #return")
-            let sendBtn = document.querySelector("#chatColumn .send")
+            let placeHolder = document.querySelector("#chatColumn .placeHolder")
+            let placeOwner = document.querySelector("#chatColumn .placeOwner")
             let currentChatImage = document.querySelector("#chatHead img")
             let currentChatName = document.querySelector("#chatHead h6")
 
             msgBox.addEventListener("click", getActiveMessage, false)
             function getActiveMessage(e) {
+                if (placeOwner.classList.contains("d-none"))
+                {
+                    placeOwner.classList.remove("d-none")
+                    placeHolder.parentNode.removeChild(placeHolder)
+                }
                 var currentUser = result.conversations.find(function (item) {
                     var neededTarget = e.target.closest('#msgList')
                     if (item.uid === neededTarget.getAttribute('key'))
@@ -112,20 +118,18 @@ export function ConversationLists() {
     })
 
     //I move this out of if statement block so it can fire both when user have contact list or not
-    let searchBtn = document.querySelector("#msgColumn #msgSearch")
-    searchBtn.onclick = function () {
-        document.querySelector("#msgColumn .input").classList.toggle("d-none")
-    }
 
-     /*****************************************************************************
-                                USER FRIENDS LIST BLOCK
-        Note: This block is important because it will help use to choose from 
-        their friend list if they don't have contact list
-    *****************************************************************************/
+
+    /*****************************************************************************
+                               USER FRIENDS LIST BLOCK
+       Note: This block is important because it will help use to choose from 
+       their friend list if they don't have contact list
+   *****************************************************************************/
     let firSearchBtn = document.querySelector("#friSearch")
     firSearchBtn.onclick = function (e) {
         document.querySelector(".friendSearchBox").classList.toggle("d-none")
-        if(!$('.friendSearchBox').hasClass("d-none")){
+        if (!$('.friendSearchBox').hasClass("d-none"))
+        {
             //Excute User Friend List
             $('#displayUserFriendsList').html('')
             // Network Class is under Networks/network, Please work on it so it can work same way as contactlist works

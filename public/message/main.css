@@ -20,6 +20,15 @@
     }
 }
 
+@media (min-width: 769px) {
+    .placeOwner, .conversation-container, .message {
+        -webkit-animation: slide-down 0.3s linear;
+        -o-animation: slide-down 0.3s linear;
+        -moz-animation: slide-down 0.3s linear;
+        animation: slide-down 0.3s linear;
+    }
+}
+
 @media (max-width: 992px) {
     .hide-md-and-down {
         display: none;
@@ -30,6 +39,14 @@
     height: 100vh !important;
     overflow-y: scroll;
     overflow-x: hidden;
+}
+
+.placeHolder {
+    background-color: rgba(229, 236, 236, 0.582);
+    font-size: 1.7rem;
+    font-style: italic;
+    text-transform: capitalize;
+    text-shadow: rgb(152, 177, 179) 2px 2px 3px;
 }
 
 #msgColumn, #chatColumn, #othersColumn {
@@ -52,13 +69,13 @@
     background-color: rgb(252, 252, 252);
     border-radius: 8px;
     padding: 8px 15px;
-    box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12) !important;
+    box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
     transition: 0.2s cubic-bezier(0.6, -0.28, 0.735, 0.045);
 }
 
 #othersColumn li:hover {
     cursor: pointer;
-    box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12) !important;
+    box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
 }
 
 #msgBox img, #chatHead img {
@@ -97,7 +114,7 @@
 }
 
 #msgHead a, #chatHead a {
-    min-width: 2.3rem;
+    min-width: 2.2rem;
     box-shadow: none;
     background-color: white;
 }
@@ -105,6 +122,43 @@
 #msgHead a:hover, #chatHead a:hover {
     box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
     background-color: rgba(175, 141, 175, 0.63);
+}
+
+.drop {
+    display: none;
+    position: absolute;
+    left: -100px;
+    min-width: 150px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    background-color: white;
+}
+
+.drop a {
+    color: rgb(148, 91, 148);
+    display: block;
+    text-decoration: none;
+    padding: 12px 16px;
+    transition: 0.3s ease;
+    -webkit-transition: 0.3s ease;
+    -moz-transition: 0.3s ease;
+    -o-transition: 0.3s ease;
+}
+
+.drop a:hover {
+    color: white;
+    background-color: rgba(87, 118, 139, 0.596);
+}
+
+.dropOptions {
+    position: relative;
+}
+
+.dropOptions:hover .drop {
+    display: block;
+    animation: ease-out 0.5s drop;
+    -o-animation: ease-out 0.5s drop;
+    -webkit-animation: ease-out 0.5s drop;
 }
 
 .scroller {
@@ -138,6 +192,7 @@
 
 #chatBox {
     background-color: rgba(160, 192, 190, 0.267);
+    min-height: 100%;
 }
 
 #chatBox .conversation-container {
@@ -156,10 +211,6 @@
     height: 57px;
     width: 100%;
     z-index: 2;
-    /* /////////// */
-    position: relative;
-    bottom: 0;
-    right: 0;
 }
 
 .inputBox div, .inputBox input {
@@ -255,7 +306,6 @@
     margin: 8px 0;
     max-width: 85%;
     word-wrap: break-word;
-    /* z-index: -1; */
 }
 
 .message:after {
@@ -267,8 +317,8 @@
 }
 
 .metadata {
-    display: inline-block;
-    /* float: right; */
+    /* display: inline-block; */
+    float: right;
     padding: 0 0 0 7px;
     position: relative;
     bottom: -4px;
@@ -322,8 +372,6 @@
     top: 0;
     right: -10px;
 }
-
-/* ////////////////////////////////////////////// */
 
 ::-webkit-scrollbar {
     transition: all .5s;
@@ -386,6 +434,34 @@
     -webkit-transform: perspective(800px) rotateY(-179.9deg);
     transform: perspective(800px) rotateY(-179.9deg);
 } */
+
+@keyframes drop {
+    0% {
+        opacity: 0;
+        transform: rotateY(90deg);
+        -webkit-transform: rotateY(90deg);
+        -moz-transform: rotateY(90deg);
+        -ms-transform: rotateY(90deg);
+        -o-transform: rotateY(90deg);
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes slide-down {
+    0% {
+        opacity: 0;
+        transform: translate(0, -500px);
+        -webkit-transform: translate(0, -500px);
+        -moz-transform: translate(0, -500px);
+        -ms-transform: translate(0, -500px);
+        -o-transform: translate(0, -500px);
+    }
+    100% {
+        opacity: 1;
+    }
+}
 
 .transition {
     transition: all linear 1s;
