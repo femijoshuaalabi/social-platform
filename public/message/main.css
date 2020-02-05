@@ -21,7 +21,7 @@
 }
 
 @media (min-width: 769px) {
-    .placeOwner, .conversation-container, .message {
+    .placeOwner, .message {
         -webkit-animation: slide-down 0.3s linear;
         -o-animation: slide-down 0.3s linear;
         -moz-animation: slide-down 0.3s linear;
