@@ -2,6 +2,50 @@
 
 /* } */
 
+.preview{
+    height: 50px;
+    width: 50px;
+    margin: 5px;
+}
+.notification-count {
+    position: absolute;
+    z-index: 1;
+    padding-left: 9px;
+    padding-bottom: px;
+    right: 0px;
+    top: 0px;
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    font-size: 12px;
+    border-radius: 50%;
+    background-color: #196b69;
+    color: #fff;
+    animation: zoom 3s 3s both infinite;
+  }
+
+.MessageUploadPreview {
+	position: relative;
+	display: inline-block;
+}
+
+.MessageUploadPreview:hover .MessageUploadDelete {
+	display: block;
+}
+
+.MessageUploadDelete {
+	padding-top: 2px;	
+	padding-right: 2px;
+	position: absolute;
+	right: 0;
+	top: 0;
+	display: none;
+}
+
+.MessageUploadDelete a {
+	color: #000;
+}
+
 @media (max-width: 576px) {
     .hide-xs {
         display: none;

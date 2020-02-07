@@ -44,6 +44,9 @@ $app->post('/friendsList', 'friendsList'); /* User friends List */
 $app->post('/suggestedFriends', 'suggestedFriends'); /* Suggested Friends */  
 $app->post('/addFriend', 'addFriend'); /* Add Friend */
 
+$app->post('/feedImageUpload', 'feedImageUpload'); /* Feed Image Upload */
+$app->post('/deletePhoto', 'deletePhoto'); /* Feed Image Upload */
+
 $app->post('/onlineStatusUpdate', 'onlineStatusUpdate'); /* online Status Update */ 
 
 $app->run();
@@ -253,6 +256,194 @@ function friendsList() {
         echo '{"error":{"text":' . $e->getMessage() . '}}';
     }
 }
+
+
+/*****************************************************************************
+                                FILE UPLOADS
+*****************************************************************************/
+
+function feedImageUpload() {
+    $request = \Slim\Slim::getInstance()->request();
+    $x = $request->post();
+
+
+    try {
+        $uploadUid = $_POST['update_uid'];
+        $token = $_POST['update_token'];
+        $upload_types = $_POST['upload_types'];
+        $time = time();
+        $key = md5(SITE_KEY . $uploadUid);
+
+
+        if ($key == $token) {
+            $upload_path = '../' . UPLOAD_PATH;
+            $valid_formats = array("jpg", "png", "gif", "bmp", "jpeg", "PNG", "JPG", "JPEG", "GIF", "BMP","mp4","3gp");
+            $group_id = $_POST['group_id'];
+            $conversationImage = $_POST['conversationImage'];
+            if (empty($group_id)) {
+                $group_id = '';
+            }
+            if (empty($conversationImage)) {
+                $conversationImage = '';
+            }
+
+            $v = '';
+            $i = 1;
+
+            $user_id = (string) $x['update_uid'];
+            if ($user_id > 0) {
+                foreach ($_FILES['photos']['name'] as $name => $value) {
+                    $filename = stripslashes($_FILES['photos']['name'][$name]);
+                    $size = filesize($_FILES['photos']['tmp_name'][$name]);
+                    //get the extension of the file in a lower case format
+                    $ext = getExtension($filename);
+                    $ext = strtolower($ext);
+                    if (in_array($ext, $valid_formats)) {
+                        $configurations = configurations();
+                        $uploadImage = $configurations[0]->uploadImage;
+                        //$uploadImageSize;
+                        if ($size < (8000 * $uploadImage)) {
+
+                            $actual_image_name = 'user' . $user_id . '_' . time() . $i . "." . $ext;
+                            $uploadedfile = $_FILES['photos']['tmp_name'][$name];
+                            $newwidth = $configurations[0]->upload;
+                            $filename = compressImage($ext, $uploadedfile, $upload_path, $actual_image_name, $newwidth);
+                            //if(move_uploaded_file($_FILES['photos']['tmp_name'][$name], $upload_path.$actual_image_name))
+                            if ($filename) {
+                                if(isset($upload_types)){
+                                    internalImageUpload($user_id, $actual_image_name, $group_id, $conversationImage,$upload_types);
+                                }else{
+                                    internalImageUpload($user_id, $actual_image_name, $group_id, $conversationImage);
+                                }
+                                $newdata = internalGetUploadImage($user_id, $actual_image_name);
+
+                                if ($newdata) {
+                                    if (empty($v)){
+                                        $v = $newdata[0]->id;
+                                    }else {
+                                        $v = $newdata[0]->id;
+                                    }
+                                    $explode = explode('.', $actual_image_name);
+                                    if($explode[1] == 'mp4'){
+                                        echo '<img src="' . BASE_URL . UPLOAD_PATH . $actual_image_name . '"  class="preview" style="display:none;" id="' . $v . '"/><video class="player preview" id="" poster="" playsinline controls>'.
+                                        '<source src="' . BASE_URL . UPLOAD_PATH . $actual_image_name . '" type="video/mp4" />'.
+                                        '</video>';
+                                    }else{
+                                        echo '<div class="MessageUploadPreview" id="MessageUploadPreview'.$v.'"><img src="' . BASE_URL . UPLOAD_PATH . $actual_image_name . '"  class="preview" id="' . $v . '"/><div class="MessageUploadDelete" id="photo' . $v . '"><a href="#"><i class="mdi mdi-delete"></i></a></div></div>';
+                                    }
+                                }
+                            }
+                            else {
+                                echo "Fail upload fail.";
+                            }
+                        } else {
+                            echo '<span class="imgList">You have exceeded the size limit!</span>';
+                        }
+                    } else {
+                        echo '<span class="imgList">Unknown extension!</span>';
+                    }
+                    $i = $i + 1;
+                }
+            }
+        }
+    } catch (PDOException $e) {
+        echo '{"error":{"text":' . $e->getMessage() . '}}';
+    }
+}
+
+/* Delete Photo */
+
+function deletePhoto() {
+
+    $request = \Slim\Slim::getInstance()->request();
+    $data = json_decode($request->getBody());
+    $uid = $data->uid;
+    $pid = $data->pid;
+    $group_id = $data->group_id;
+    $photo_uid = $data->photo_uid;
+    $group_owner_id = internalGroupOwner($group_id);
+
+    try {
+        $key = md5(SITE_KEY . $uid);
+        if ($key == $data->token) {
+            $db = getDB();
+            if ($group_owner_id == $uid) {
+                $uid = $photo_uid;
+            }
+
+            if (empty($group_id)) {
+                $sql1 = "UPDATE users SET photos_count=photos_count-1 WHERE uid=:uid";
+                $stmt1 = $db->prepare($sql1);
+                $stmt1->bindParam("uid", $uid, PDO::PARAM_INT);
+                $stmt1->execute();
+            }
+
+            $sql = "SELECT id,image_path FROM user_uploads U WHERE id=:pid AND uid_fk=:uid";
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam("uid", $uid, PDO::PARAM_INT);
+            $stmt->bindParam("pid", $pid, PDO::PARAM_INT);
+            $stmt->execute();
+            $count = $stmt->rowCount();
+
+            if ($count > 0) {
+
+                $data = $stmt->fetchAll(PDO::FETCH_OBJ);
+                $final_image = "../" . UPLOAD_PATH . $data[0]->image_path;
+
+                unlink($final_image);
+
+                $sql1 = "SELECT uploads,msg_id FROM messages WHERE uid_fk=:uid AND uploads!=0 AND  uploads LIKE :searchID";
+                $stmt1 = $db->prepare($sql1);
+                $stmt1->bindParam("uid", $uid, PDO::PARAM_INT);
+                $searchID = "%" . $pid . "%";
+                $stmt1->bindParam("searchID", $searchID, PDO::PARAM_STR);
+                $stmt1->execute();
+                $photoResult = $stmt1->fetchAll(PDO::FETCH_OBJ);
+                $msgid = $photoResult[0]->msg_id;
+                $str = $photoResult[0]->uploads;
+
+                $tmp = explode(",", $str);
+                $key = array_search($pid, $tmp);
+                if ($key) {
+                    $tmp[$key] = null;
+                }
+                $tmp = array_filter($tmp);
+                $newSet = implode(",", $tmp);
+                $newSet = (string) $newSet;
+
+                if ($newSet == $str) {
+                    $pattern = '/(\,)?' . $pid . '(\,)?/i';
+                    $newSet = preg_replace($pattern, '', $str);
+                }
+
+                if (strlen($newSet) == 0) {
+                    $newSet = '';
+                }
+
+                $sql2 = "UPDATE messages SET uploads=:newSet WHERE msg_id=:msgid and uid_fk=:uid";
+                $stmt2 = $db->prepare($sql2);
+                $stmt2->bindParam("uid", $uid, PDO::PARAM_INT);
+                $stmt2->bindParam("msgid", $msgid, PDO::PARAM_INT);
+                $stmt2->bindParam("newSet", $newSet, PDO::PARAM_STR);
+                $stmt2->execute();
+
+                $sql3 = "DELETE FROM user_uploads WHERE id=:pid AND uid_fk=:uid";
+                $stmt3 = $db->prepare($sql3);
+                $stmt3->bindParam("uid", $uid, PDO::PARAM_INT);
+                $stmt3->bindParam("pid", $pid, PDO::PARAM_INT);
+                $stmt3->execute();
+
+
+                $db = null;
+                echo '{"deletePhoto": [{"status":"1"}]}';
+            }
+        }
+    } catch (PDOException $e) {
+        echo '{"error":{"text":' . $e->getMessage() . '}}';
+    }
+}
+
+
 
 
 

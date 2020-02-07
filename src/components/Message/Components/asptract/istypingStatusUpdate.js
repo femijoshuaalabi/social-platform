@@ -23,12 +23,16 @@ export function istypingStatusUpdate() {
             {
                 //Display typing animation here
                 $('#message_last_seen').hide()
+                $('#MessageLastReply').hide()
                 $('#message_is_typing').show().html('typing...')
+                $('#LastReplyIsTyping').show().html('typing...')
             } else
             {
                 //Remove typing animation here
                 $('#message_last_seen').show()
+                $('#MessageLastReply').show()
                 $('#message_is_typing').html('').hide()
+                $('#LastReplyIsTyping').html('').hide()
             }
         }
     })

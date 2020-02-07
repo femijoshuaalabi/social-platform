@@ -12,7 +12,8 @@ export function AJYPost(URL, userData) {
         resolve(res)
       })
       .catch((error) => {
-        reject(error)
+        //reject(error)
+        console.log(error)
       })
   })
 }

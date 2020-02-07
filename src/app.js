@@ -2,7 +2,8 @@
 //import ReactDOM from 'react-dom';
 
 import { AjuwayaSeperator } from './scripts/Ajuwaya'
-
+require('es6-promise').polyfill();
+require('isomorphic-fetch');
 
 class App {
 

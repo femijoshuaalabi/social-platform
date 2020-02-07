@@ -62,8 +62,8 @@ $request = \Slim\Slim::getInstance()->request();
                 }
                 /*ProfilePic Check*/
                 $conversations[$z]->profile_pic=profilePic($conversations[$z]->profile_pic);
+                $conversations[$z]->unreadMessageCount=internalConversationUnreadMessage($conversations[$z]->c_id,$data->uid);
                 $conversations[$z]->lastReply=internalConversationLast($conversations[$z]->c_id);
-                
             }
             
             $db = null;

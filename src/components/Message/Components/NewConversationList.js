@@ -1,19 +1,14 @@
 
 import $ from "jquery"
 import { AJYPost } from '../../../scripts/AjuwayaRequests'
-import { ConversationReplies } from './ConversationReplies'
 
-import { Networks } from '../../Networks/Networks'
-import { isTypingCheckUp } from './isTypingCheckUp'
-import { UserLastSeenUpdate } from '../../onlineStatus'
-import { conversationNewReplies } from './conversationNewReplies'
 import { TimeConverter } from '../../Functionalities'
 
 /*****************************************************************************
                         DISPLAY USER CONTACT LIST
 *****************************************************************************/
 
-export function ConversationLists() {
+export function NewConversationList() {
     const uid = $('#uid').val()
     const token = $('#token').val()
 
@@ -30,10 +25,10 @@ export function ConversationLists() {
     let apiBaseUrl = $.baseUrl + 'Aapi/conversationLists'
 
     AJYPost(apiBaseUrl, encodedata).then((result) => {
-
         if (result.conversations.length) {
             let ContactList = ''
             $.each(result.conversations, (i, data) => {
+                console.log(data)
                 let notificationBudget = ''
                 if(data.unreadMessageCount !== 0){
                     notificationBudget = `<span class="notification-count">${data.unreadMessageCount}</span>`
@@ -71,26 +66,6 @@ export function ConversationLists() {
             let currentChatName = document.querySelector("#chatHead h6")
 
             /*****************************************************************************
-                        MAKE FUNCTIONAL METHODS RUNS ONLY WHEN PUBLIC USERNAME IS SET
-            *****************************************************************************/
-            
-            let public_username = $('#public_username').val()
-            let MessageUrlOnceChanged = $('#MessageUrlOnceChanged').val()
-            if(public_username != '' && MessageUrlOnceChanged == ""){
-                // Clear last seen before querying
-                $('#message_last_seen').html('')
-
-                //Check if user is typing
-                isTypingCheckUp()
-
-                //Check if user is online
-                UserLastSeenUpdate()
-
-                //New Reply slow up
-                conversationNewReplies()
-            }
-
-            /*****************************************************************************
             BLOCKED CLOSED: MAKE FUNCTIONAL METHODS RUNS ONLY WHEN PUBLIC USERNAME IS SET
             *****************************************************************************/
 
@@ -123,25 +98,6 @@ export function ConversationLists() {
                     $('#MessageUrlOnceChanged').val('true')
 
                     /*****************************************************************************
-                                        FUNCTIONAL METHODS INIT
-                    *****************************************************************************/
-                    if(currentUser.username !== ''){
-
-                        ConversationReplies()
-                        // Clear last seen before querying
-                        $('#message_last_seen').html('')
-
-                        //Check if user is typing
-                        isTypingCheckUp()
-
-                        //Check if user is online
-                        UserLastSeenUpdate()
-
-                        //New Reply slow up
-                        conversationNewReplies()
-
-                    }
-                    /*****************************************************************************
                                             THIS IS THE ONLY CODE I ADDED
                     *****************************************************************************/
 
@@ -171,33 +127,5 @@ export function ConversationLists() {
         }
 
     })
-   
-
-    //I move this out of if statement block so it can fire both when user have contact list or not
-
-
-    /*****************************************************************************
-                               USER FRIENDS LIST BLOCK
-       Note: This block is important because it will help use to choose from 
-       their friend list if they don't have contact list
-   *****************************************************************************/
-    let firSearchBtn = document.querySelector("#friSearch")
-    firSearchBtn.onclick = function (e) {
-        document.querySelector(".friendSearchBox").classList.toggle("d-none")
-        if (!$('.friendSearchBox').hasClass("d-none")){
-            //Execute User Friend List
-            $('#displayUserFriendsList').html('')
-            // Network Class is under Networks/network, Please work on it so it can work same way as contactlist works
-            let FriendsList = new Networks()
-            FriendsList.UserNetworksForMessages()
-
-            $('#conversation_list_box').hide()
-            $('#search_list_box').show()
-            $('#search_list_box').addClass('BoxOnceOpened')
-        }else {
-            $('#conversation_list_box').show()
-            $('#search_list_box').hide()
-        }
-    }
 
 }

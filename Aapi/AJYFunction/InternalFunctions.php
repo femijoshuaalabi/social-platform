@@ -75,6 +75,27 @@ function internalConversationLast($c_id){
     }  
 }
 
+function internalConversationUnreadMessage($c_id,$user_id){
+    try {    
+        if($c_id > 0)
+        {
+            $db = getDB();
+            $sql = "SELECT cr_id FROM conversation_reply WHERE user_id_fk<>:user_id AND c_id_fk=:c_id AND read_status=:read_status";
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam("c_id", $c_id, PDO::PARAM_INT);
+            $read_status = 1;
+            $stmt->bindParam("read_status", $read_status, PDO::PARAM_INT);
+            $stmt->bindParam("user_id", $user_id, PDO::PARAM_INT);
+            $stmt->execute();
+            $ConversationUnreadMessage = $stmt->fetchAll(PDO::FETCH_OBJ);
+            $db = null;
+            return count($ConversationUnreadMessage);
+        }
+    } catch(PDOException $e) {
+        echo '{"error":{"text":'. $e->getMessage() .'}}';
+    }
+}
+
 
 /* ### internal Username Details ### */
 function internalUsernameDetails($username) {
@@ -227,6 +248,94 @@ function internalFriendsCheck($uid, $fid) {
         $friendsCheck = $stmt->fetchAll(PDO::FETCH_OBJ);
         $db = null;
         return $friendsCheck[0]->role;
+    } catch (PDOException $e) {
+        echo '{"error":{"text":' . $e->getMessage() . '}}';
+    }
+}
+
+/* ### INTERNAL Image Upload ### */
+function internalImageUpload($uid, $image, $group_id, $conversationImage, $upload_types = '') {
+    $ids = 0;
+    $time = time();
+    if (empty($group_id)) {
+        $group_id = '0';
+    }
+
+    $image_type = 0;
+    if ($conversationImage) {
+        $image_type = 1;
+    }
+
+    try {
+
+        if ($uid > 0) {
+            $db = getDB();
+
+            if ($group_id < 1 && $image_type < 1) {
+                $sql1 = "UPDATE users SET photos_count=photos_count+1 WHERE uid=:uid";
+                $stmt1 = $db->prepare($sql1);
+                $stmt1->bindParam("uid", $uid, PDO::PARAM_INT);
+                $stmt1->execute();
+            }
+
+            $sql = "INSERT INTO user_uploads (image_path,uid_fk,group_id_fk,image_type,upload_types,created,time)VALUES(:image ,:uid,:group_id,:image_type,:upload_types,CURDATE(),'$time')";
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam("image", $image, PDO::PARAM_STR);
+            $stmt->bindParam("uid", $uid, PDO::PARAM_INT);
+            $stmt->bindParam("image_type", $image_type, PDO::PARAM_STR);
+            $stmt->bindParam("group_id", $group_id, PDO::PARAM_INT);
+            $stmt->bindParam("upload_types", $upload_types, PDO::PARAM_STR);
+            $stmt->execute();
+            $db = null;
+            return $ids;
+        }
+    } catch (PDOException $e) {
+        echo '{"error":{"text":' . $e->getMessage() . '}}';
+    }
+}
+
+/* ### INTERNAL get Image Upload ### */
+
+function internalGetUploadImage($uid, $image) {
+
+    try {
+        $db = getDB();
+
+        if ($image) {
+            $sql = "SELECT id,image_path from user_uploads WHERE image_path=:image ";
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam("image", $image, PDO::PARAM_STR);
+        } else {
+            $sql = "SELECT id,image_path FROM user_uploads WHERE uid_fk=:uid ORDER BY id desc";
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam("uid", $uid, PDO::PARAM_INT);
+        }
+
+        $stmt->execute();
+        $getUploadImage = $stmt->fetchAll(PDO::FETCH_OBJ);
+        $db = null;
+        return $getUploadImage;
+    } catch (PDOException $e) {
+        echo '{"error":{"text":' . $e->getMessage() . '}}';
+    }
+}
+
+/* Internal Group Owner */
+
+function internalGroupOwner($groupid) {
+
+    $sql = "SELECT uid_fk  FROM groups WHERE group_id=:groupid AND status=:status";
+    try {
+        $db = getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam("groupid", $groupid, PDO::PARAM_INT);
+        $status = '1';
+        $stmt->bindParam("status", $status);
+        $stmt->execute();
+        $groupDetails = $stmt->fetchAll(PDO::FETCH_OBJ);
+        $db = null;
+
+        return $groupDetails[0]->uid_fk;
     } catch (PDOException $e) {
         echo '{"error":{"text":' . $e->getMessage() . '}}';
     }

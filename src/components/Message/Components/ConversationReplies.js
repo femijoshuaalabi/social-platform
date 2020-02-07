@@ -1,9 +1,7 @@
 import $ from "jquery";
 import { AJYPost } from '../../../scripts/AjuwayaRequests'
-import { isTypingCheckUp } from './isTypingCheckUp'
-import { UserLastSeenUpdate } from '../../onlineStatus'
-import { conversationNewReplies } from './conversationNewReplies'
 import { TimeConverter } from '../../Functionalities'
+import EmojiButton from '@joeattardi/emoji-button';
 
 export function ConversationReplies() {
 
@@ -13,23 +11,6 @@ export function ConversationReplies() {
     let token =  $('#token').val();
     let last = ''
     let message_user = public_username
-
-    /*****************************************************************************
-                                PAGE MODULE DECLARATION
-    *****************************************************************************/
-    if(public_username !== ''){
-        // Clear last seen before querying
-        $('#message_last_seen').html('')
-
-        //Check if user is typing
-        isTypingCheckUp()
-
-        //Check if user is online
-        UserLastSeenUpdate()
-
-        //New Reply slow up
-        conversationNewReplies()
-    }
 
     /*****************************************************************************
                             PAGE MODULE DECLARATION ENDS
@@ -104,5 +85,17 @@ export function ConversationReplies() {
             })
         }
     })
+
+
+    const button = document.querySelector('#emoji-button');
+    const picker = new EmojiButton();
+  
+    picker.on('emoji', emoji => {
+      document.querySelector('#conversationReply').value += emoji;
+    });
+  
+    button.addEventListener('click', () => {
+      picker.pickerVisible ? picker.hidePicker() : picker.showPicker(button);
+    });
 
 }

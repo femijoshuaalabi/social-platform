@@ -41,17 +41,20 @@
                             autocomplete="on">
                     </div> -->
                     <div class="friendSearchBox p-2 d-none">
-                        <div class="card" style="height: 70vh; padding: 10px">
+                        <div class="card" style="height: auto; padding: 10px">
                             <input style="margin-top: 10px" class="form-control" placeholder="Search Friends..."
                                 type="search" autofocus autocomplete="on">
-                            <div id="displayUserFriendsList"></div>
+                            <div class="displayUserFriendsList"></div>
                         </div>
                     </div>
                 </div>
 
                 <hr>
                 <div class="container-fluid scroller">
-                    <div id="msgBox" class=""></div>
+                    <div id="msgBox">
+                        <div id="conversation_list_box"></div>
+                        <div id="search_list_box" style="display: none">Search Display</div>
+                    </div>
                 </div>
             </div>
 
@@ -66,8 +69,8 @@
                         <div class="py-1 pl-3 flex-grow-1">
                             <h6 class="my-0 font-weight-bolder">Andrew Malik</h6>
                             <p class="small my-0 text-muted">
-                                <small id="message_last_seen">Last seen: 03:28PM</small>
-                                <small id="message_is_typing" class="display_none"></small>
+                                <small id="message_last_seen"></small>
+                                <small id="message_is_typing" style="display:none"></small>
                             </p>
                         </div>
                         <a class="icon btn-floating btn-sm btn-light mr-0"><i class="mdi mdi-apps"></i></a>
@@ -90,8 +93,28 @@
                         
                     </div>
 
+                
+                        <div class="" id="MessageUploadPreviewContainer" style="display:none;position: absolute;bottom: 0px;background: rgb(255, 255, 255,0.5);width: 100%; height:120px;">
+                             <!-- Uploading Images and Feed Media Form -->
+                             <form id="imageform" method="post" enctype="multipart/form-data" action="<?php echo BASE_URL ?>Aapi/feedImageUpload">
+                                <div id="MessageUploadPreview"></div>
+                                <div id="imageloadstatus" style="display: none">
+                                    <img src="<?php echo BASE_URL; ?>assets/preloader/loader.gif" class="icon"> Uploading please wait ....
+                                </div>
+                                <div id="imageloadbutton" class="d-none">
+                                    <input type="file" name="photos[]" id="photoimg" multiple="true" accept="image/*" />
+                                </div>
+                                <div data-ajuwaya="message-params" class="d-none">
+                                    <input type="hidden" id="uploadvalues"/>
+                                    <input type="hidden" id="upload_uid" value="<?php echo $this->sessionUid ?>" name="update_uid" />
+                                    <input type="hidden" id="upload_Token" value="<?php echo $this->sessionToken; ?>" name="update_token" />
+                                    <input type="hidden"  value="1" name="conversationImage"/>
+                                </div>
+                            </form>
+                            <!-- Uploading Images and Feed Media Form CLOSED -->
+                        </div>
                         <div class="inputBox pb-2">
-                            <div class="emoji">
+                            <div class="emoji" id="emoji-button">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" id="smiley" x="3147"
                                     y="3209">
                                     <path fill-rule="evenodd" clip-rule="evenodd"
@@ -101,10 +124,10 @@
                             </div>
                             <input id="conversationReply" type="text" class="input-msg" name="input"
                                 placeholder="Type a message" autocomplete="off"></input>
-                            <div class="rightIcon">
+                            <div class="rightIcon" style="cursor:pointer" id="file-upload">
                                 <i class="mdi mdi-paperclip"></i>
                             </div>
-                            <div class="rightIcon">
+                            <div class="rightIcon" id="image-upload" style="cursor:pointer">
                                 <i class="mdi mdi-camera"></i>
                             </div>
                             <a id="sendButton" class="send btn-floating my-0">
@@ -155,12 +178,14 @@
         <input type="hidden" id="token" value="<?php echo $this->sessionToken; ?>"/>
         <input type="hidden" id="public_username" value="<?php echo $this->public_username; ?>" />
         <input type="hidden" id="conversationId" value="" />
+        <input type="hidden" id="MessageUrlOnceChanged" value="" />
     </footer>
     
     <script src="<?php echo BASE_URL ?>build/app.bundle.js"></script>
     <script src="<?php echo BASE_URL ?>build/dist/mdb/js/jquery-3.4.1.min.js"></script>
     <script src="<?php echo BASE_URL ?>build/dist/mdb/js/bootstrap.min.js"></script>
     <script src="<?php echo BASE_URL ?>build/dist/mdb/js/mdb.min.js"></script>
+
 </div>
   </body>
 </html>
