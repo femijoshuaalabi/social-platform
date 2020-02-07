@@ -1,0 +1,245 @@
+body {
+    background-color: rgba(225, 236, 243, 0.671);
+    font-size: 14px;
+}
+
+@media (max-width: 576px) {
+    .hide-xs {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .hide-sm-and-down {
+        display: none;
+    }
+}
+
+li {
+    list-style: none;
+    padding-left: 14px;
+}
+
+.leftNav p {
+    overflow-y: scroll;
+}
+
+.leftNav ul {
+    background-color: white;
+    border-radius: 8px;
+    padding-left: 1rem;
+}
+
+.leftNav ul span, .rightNav>div>span {
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.leftNav ul div, .rightNav .more {
+    color: rgb(104, 166, 187);
+    cursor: pointer;
+}
+
+.leftNav ul .mdi {
+    margin-right: 1rem;
+}
+
+.leftNav li {
+    margin-top: 7px;
+    margin-bottom: 7px;
+    /* margin-right: 7px; */
+    cursor: pointer;
+    transition: linear 0.2s;
+    -webkit-transition: linear 0.2s;
+}
+
+.leftNav li:hover {
+    color: rgba(139, 177, 194, 0.603);
+    transform: translate(5px);
+    -ms-transform: translate(5px);
+    -webkit-transform: translate(5px);
+}
+
+.leftNav hr {
+    width: 90%;
+    margin: 10px 0;
+}
+
+.rightNav {
+    background-color: white;
+    border-radius: 6px;
+}
+
+/* .leftNav, .rightNav0 {
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+} */
+
+#addNewFriends {
+    height: 350px;
+    width: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+#addNewFriends img {
+    min-width: 3.4rem;
+    width: 3.4rem;
+    height: 3.4rem;
+    border: double rgb(175, 132, 180) 4px;
+}
+
+.rightNav h6 {
+    max-width: 85%;
+    font-size: 12px;
+}
+
+#addNewFriends hr {
+    margin-left: 4rem;
+}
+
+#post, #cat, #friendsPosts, .leftNav ul, .rightNav {
+    box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12)
+}
+
+#post, #cat, #friendsPosts {
+    background-color: white;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+
+#post img {
+    border: white 4px double;
+    width: 3.5rem;
+    height: 3.5rem;
+}
+
+#post #statusPost {
+    width: 100%;
+    border: rgb(104, 166, 187) thin solid;
+    border-radius: 8px;
+    padding: 7px;
+}
+
+#post #statusPost:focus, #postComment:focus {
+    outline: none;
+}
+
+#post a, #cat a {
+    color: rgb(116, 160, 168);
+}
+
+#post .post, #cat a, #responses .send {
+    padding: 5px;
+    border-radius: 4px;
+    border: solid cadetblue 1px;
+    box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+}
+
+#cat .slots {
+    overflow-x: scroll;
+    margin-bottom: 10px;
+}
+
+#cat .slots>div {
+    position: relative;
+    min-width: 200px;
+    max-width: 200px;
+    max-height: 200px;
+    margin: 4px;
+}
+
+#cat .slots span {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    color: white;
+    font-weight: 900;
+    background-color: rgba(128, 128, 128, 0.541);
+    padding: 2px 4px;
+    border-radius: 5px;
+}
+
+#cat .slots img {
+    border: white;
+    border-radius: 5px;
+    width: 100%;
+    height: 100%;
+}
+
+#responses .send {
+    border: none;
+    color: cornflowerblue;
+    font-size: 18px;
+}
+
+#post .post:active, #cat a:active, #responses .send:active {
+    box-shadow: none;
+    background-color: rgba(201, 232, 233, 0.644);
+}
+
+#cat .slots {
+    height: 150px;
+}
+
+.friendsImage {
+    min-width: 4rem;
+    width: 3.4rem;
+    height: 4rem;
+    border: white;
+    border-radius: 10px;
+}
+
+#friendsPosts #friendsPostContent {
+    font-size: 0.726rem;
+}
+
+#friendsPosts h6, #commentContent {
+    font-size: 12px;
+}
+
+#friendsPosts .likes {
+    font-size: 16px;
+    color: rgb(60, 169, 219);
+}
+
+#friendsPostContent img {
+    width: 100%;
+    max-height: 250px;
+    border: white;
+    border-radius: 8px;
+}
+
+#responses .container-fluid {
+    background-color: rgba(225, 236, 243, 0.671);
+    border-radius: 6px;
+}
+
+#responses img {
+    width: 2.3rem;
+    height: 2.3rem;
+}
+
+#postComment {
+    width: 80%;
+    border: rgb(104, 166, 187) thin solid;
+    border-radius: 28px;
+    background-color: rgb(255, 252, 238);
+    padding: 7px;
+}
+
+::-webkit-scrollbar {
+    transition: all .5s;
+    width: 3px;
+    height: 1px;
+    z-index: 10;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c2bfbb;
+}
