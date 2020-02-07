@@ -36,10 +36,10 @@ export function ConversationLists() {
             $.each(result.conversations, (i, data) => {
                 let notificationBudget = ''
                 if(data.unreadMessageCount !== 0){
-                    notificationBudget = `<span class="notification-count">${data.unreadMessageCount}</span>`
+                    notificationBudget = `<span class="notification-count" id="updateConversation${ data.uid }">${data.unreadMessageCount}</span>`
                 }
                 const conversationsList = `
-                        <div id="msgList" key="${ data.uid }" class="row no-gutters flex-nowrap align-items-center p-1" style="position:relative">
+                        <div id="conversationsList${ data.uid }" key="${ data.uid }" class="my-3 msgList row no-gutters flex-nowrap align-items-center p-1" style="position:relative">
                             <div>
                                 <img src="${ data.profile_pic }" alt="${ data.username }" class="rounded">
                             </div>
@@ -49,13 +49,12 @@ export function ConversationLists() {
                                     <p class="mb-1 text-right mr-3 text-nowrap"><span class="small "><small>${TimeConverter(data.time) }</small></span></p>
                                     ${notificationBudget}
                                 </div>
-                                <p class="small my-0 text-muted text-truncate pr-2" id="MessageLastReply">
+                                <p class="small my-0 text-muted text-truncate pr-2 MessageLastReply${ data.uid }" id="MessageLastReply">
                                 ${ data.lastReply.reply }
                                 </p>
                                 <p class="small my-0 text-muted text-truncate pr-2" id="LastReplyIsTyping" style="display:none; color: #196b69 !important"></div>
                             </div> 
                         </div>
-                        <hr class="my-3">
                 `
                 ContactList += conversationsList
             })
@@ -104,7 +103,7 @@ export function ConversationLists() {
                     placeHolder.parentNode.removeChild(placeHolder)
                 }
                 var currentUser = result.conversations.find(function (item) {
-                    var neededTarget = $(e.target).closest('#msgList')
+                    var neededTarget = $(e.target).closest('.msgList')
                     if (item.uid === neededTarget.attr('key'))
                     {
                         return item
@@ -126,7 +125,6 @@ export function ConversationLists() {
                                         FUNCTIONAL METHODS INIT
                     *****************************************************************************/
                     if(currentUser.username !== ''){
-
                         ConversationReplies()
                         // Clear last seen before querying
                         $('#message_last_seen').html('')

@@ -13,6 +13,10 @@ export class Networks {
     }
 
 
+    /*****************************************************************************
+                THIS METHOD IS USED ON  MESSAGE CONTACT LIST SEARCH
+    *****************************************************************************/
+
     UserNetworksForMessages = () => {
 
         if(!$('#search_list_box').hasClass('BoxOnceOpened')) {
@@ -34,7 +38,7 @@ export class Networks {
                 if (result.friendsList.length) {
                     $.each(result.friendsList, function(i, data) {
                         const friendsList = `
-                                <div id="msgList" key="${ data.uid }" class="row no-gutters flex-nowrap align-items-center p-1">
+                                <div id="${ data.uid }" key="${ data.uid }" class="msgList row no-gutters flex-nowrap align-items-center p-1">
                                     <div>
                                         <img src="${ data.profile_pic }" alt="${ data.username }" class="rounded">
                                     </div>
@@ -74,7 +78,7 @@ export class Networks {
                             placeOwner.classList.remove("d-none")
                             placeHolder.parentNode.removeChild(placeHolder)
                         }
-                        var currentUser = result.conversations.find(function (item) {
+                        var currentUser = result.friendsList.find(function (item) {
                             var neededTarget = $(e.target).closest('#msgList')
                             if (item.uid === neededTarget.attr('key'))
                             {
@@ -97,7 +101,6 @@ export class Networks {
                                                 FUNCTIONAL METHODS INIT
                             *****************************************************************************/
                             if(currentUser.username !== ''){
-        
                                 ConversationReplies()
                                 // Clear last seen before querying
                                 $('#message_last_seen').html('')

@@ -12,6 +12,27 @@ export function ConversationReplies() {
     let last = ''
     let message_user = public_username
 
+
+    /*****************************************************************************
+                    OPEN MESSAGE BOX IS PUBLICK USERNAME IS AVAILABLE
+    *****************************************************************************/
+    if(message_user !== ""){
+        let placeOwner = document.querySelector("#chatColumn .placeOwner")
+        let placeHolder = document.querySelector("#chatColumn .placeHolder")
+        let msgColumn = document.getElementById("msgColumn")
+        let chatColumn = document.getElementById("chatColumn")
+
+        if (placeOwner.classList.contains("d-none")) {
+            placeOwner.classList.remove("d-none")
+            placeHolder.parentNode.removeChild(placeHolder)
+
+            msgColumn.classList.add("hide-sm-and-down")
+            chatColumn.classList.remove("hide-sm-and-down")
+        }
+    }
+
+
+
     /*****************************************************************************
                             PAGE MODULE DECLARATION ENDS
     *****************************************************************************/
@@ -41,6 +62,7 @@ export function ConversationReplies() {
             *****************************************************************************/
             
             $.each(result.conversationReplies, (i, data) => {
+                $("#displayUserName").html(data.name)
                 /*****************************************************************************
                                     CHECK IF MEDIA AVAILABLE
                 *****************************************************************************/
@@ -87,6 +109,10 @@ export function ConversationReplies() {
     })
 
 
+    /*****************************************************************************
+                            EMOJI CREATION: NB: 
+                        DEPRECATED FOR CONTINUTITY
+    *****************************************************************************/
     const button = document.querySelector('#emoji-button');
     const picker = new EmojiButton();
   

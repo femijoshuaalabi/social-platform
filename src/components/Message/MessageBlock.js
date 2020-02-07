@@ -18,14 +18,21 @@ export class MessageBlock {
                                     USER CONTACT LIST
         *****************************************************************************/
         window.addEventListener('load',  ConversationLists(), false)
+        /*****************************************************************************
+                        CHECK IF THERE IS NEW MESSAGE NOTIFICATION
+        *****************************************************************************/
         setInterval(()=> {
             NewConversationList()
-        },10000)
+        },1000)
 
         /*****************************************************************************
                                DISPLAY CONVERSATION BLOCK
         *****************************************************************************/
-        ConversationReplies()
+        let public_username = $('#public_username').val()
+        let message_user = public_username
+        if(message_user !== ''){
+            ConversationReplies()
+        }
 
         /*****************************************************************************
                                 USER REPLY TO MESSAGES
@@ -35,19 +42,12 @@ export class MessageBlock {
             ReplyConversation()
         }, false)
 
-
-        let public_username = $('#public_username').val()
-        let message_user = public_username
-
         /*****************************************************************************
                                     PAGE MODULE DECLARATION
         *****************************************************************************/
 
         //Media Upload
         MediaUpload()
-
-
-
                
     }
 

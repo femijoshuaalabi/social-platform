@@ -1,6 +1,6 @@
 //import React from 'react';
 //import ReactDOM from 'react-dom';
-
+import $ from "jquery"
 import { AjuwayaSeperator } from './scripts/Ajuwaya'
 require('es6-promise').polyfill();
 require('isomorphic-fetch');

@@ -67,7 +67,7 @@
                                 class="mdi mdi-arrow-left"></i></a>
                         <img src="../assets/img/pexels-photo-5.jpeg" alt="user image" class="rounded">
                         <div class="py-1 pl-3 flex-grow-1">
-                            <h6 class="my-0 font-weight-bolder">Andrew Malik</h6>
+                            <h6 class="my-0 font-weight-bolder" id="displayUserName"></h6>
                             <p class="small my-0 text-muted">
                                 <small id="message_last_seen"></small>
                                 <small id="message_is_typing" style="display:none"></small>

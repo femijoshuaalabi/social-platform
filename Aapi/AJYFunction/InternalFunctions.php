@@ -80,16 +80,15 @@ function internalConversationUnreadMessage($c_id,$user_id){
         if($c_id > 0)
         {
             $db = getDB();
-            $sql = "SELECT cr_id FROM conversation_reply WHERE user_id_fk<>:user_id AND c_id_fk=:c_id AND read_status=:read_status";
+            $sql = "SELECT R.reply,R.user_id_fk,R.read_status FROM conversation_reply R WHERE user_id_fk<>:user_id AND R.c_id_fk=:c_id AND read_status=:read_status ORDER BY R.cr_id DESC";
             $stmt = $db->prepare($sql);
             $stmt->bindParam("c_id", $c_id, PDO::PARAM_INT);
+            $stmt->bindParam("user_id", $user_id, PDO::PARAM_INT);
             $read_status = 1;
             $stmt->bindParam("read_status", $read_status, PDO::PARAM_INT);
-            $stmt->bindParam("user_id", $user_id, PDO::PARAM_INT);
             $stmt->execute();
-            $ConversationUnreadMessage = $stmt->fetchAll(PDO::FETCH_OBJ);
-            $db = null;
-            return count($ConversationUnreadMessage);
+            $conversationLastReply = $stmt->fetchAll(PDO::FETCH_OBJ);
+            return count($conversationLastReply);
         }
     } catch(PDOException $e) {
         echo '{"error":{"text":'. $e->getMessage() .'}}';

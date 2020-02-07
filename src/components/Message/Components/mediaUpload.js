@@ -54,7 +54,6 @@ function imageUpload(){
         let apiBaseUrl = $.baseUrl + 'Aapi/deletePhoto'
 
         AJYPost(apiBaseUrl, encodedata).then((result) => {
-            console.log('okay')
             if (result.deletePhoto.length) {
                 $("#MessageUploadPreview" + pid).fadeOut('slow')
                 let elem = document.getElementById("MessageUploadPreview" + pid)
