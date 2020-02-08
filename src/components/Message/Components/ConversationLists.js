@@ -36,24 +36,30 @@ export function ConversationLists() {
             $.each(result.conversations, (i, data) => {
                 let notificationBudget = ''
                 if(data.unreadMessageCount !== 0){
-                    notificationBudget = `<span class="notification-count" id="updateConversation${ data.uid }">${data.unreadMessageCount}</span>`
+                    notificationBudget = 'block'
+                }else {
+                    notificationBudget = 'none'
                 }
+
                 const conversationsList = `
-                        <div id="conversationsList${ data.uid }" key="${ data.uid }" class="my-3 msgList row no-gutters flex-nowrap align-items-center p-1" style="position:relative">
+                        <div id="conversationsList${ data.uid }" class="conversationsList${ data.c_id } orderMessages" data-time="${data.time}" >
+                        <div key="${ data.uid }" class="msgList row no-gutters flex-nowrap align-items-center p-1" style="position:relative">
                             <div>
                                 <img src="${ data.profile_pic }" alt="${ data.username }" class="rounded">
                             </div>
                             <div class="py-1 pl-2 flex-grow-1" style="max-width:85%;">
                                 <div class="row no-gutters flex-nowrap justify-content-between align-items-center">
                                     <h6 class="mb-1 font-weight-bolder text-truncate" style="max-width:60%;">${ data.name }</h6>
-                                    <p class="mb-1 text-right mr-3 text-nowrap"><span class="small "><small>${TimeConverter(data.time) }</small></span></p>
-                                    ${notificationBudget}
+                                    <p class="mb-1 text-right mr-3 text-nowrap"><span class="small "><small id="conversationDateTime${ data.uid }">${TimeConverter(data.time) }</small></span></p>
+                                    <span class="notification-count updateConversation${ data.c_id }"" id="updateConversation${ data.uid }" style="display:${notificationBudget}">${data.unreadMessageCount}</span>
                                 </div>
-                                <p class="small my-0 text-muted text-truncate pr-2 MessageLastReply${ data.uid }" id="MessageLastReply">
+                                <p class="small my-0 text-muted text-truncate pr-2 MessageLastReply${ data.uid }  MessageLastReply${ data.c_id }" id="MessageLastReply">
                                 ${ data.lastReply.reply }
                                 </p>
                                 <p class="small my-0 text-muted text-truncate pr-2" id="LastReplyIsTyping" style="display:none; color: #196b69 !important"></div>
                             </div> 
+                        </div>
+                        <hr class="my-3" >
                         </div>
                 `
                 ContactList += conversationsList
@@ -97,6 +103,10 @@ export function ConversationLists() {
 
             function getActiveMessage(e) {
 
+                /*****************************************************************************
+                                    HIDE NOTIFICATION ICON ON CLICK
+                *****************************************************************************/         
+
                 if (placeOwner.classList.contains("d-none"))
                 {
                     placeOwner.classList.remove("d-none")
@@ -111,6 +121,10 @@ export function ConversationLists() {
                 })
 
                if(currentUser){
+                    /*****************************************************************************
+                                        HIDE NOTIFICATION ICON ON CLICK
+                    *****************************************************************************/ 
+                   $('#updateConversation'+currentUser.uid ).hide()
                     /*****************************************************************************
                                             THIS IS THE ONLY CODE I ADDED
                     *****************************************************************************/
@@ -188,6 +202,7 @@ export function ConversationLists() {
             // Network Class is under Networks/network, Please work on it so it can work same way as contactlist works
             let FriendsList = new Networks()
             FriendsList.UserNetworksForMessages()
+             FriendsList.UserSearchForMessages()
 
             $('#conversation_list_box').hide()
             $('#search_list_box').show()

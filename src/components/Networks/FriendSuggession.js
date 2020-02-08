@@ -55,8 +55,6 @@ export class FriendSuggession {
         })
     }
 
-
-
 }
 
 export default FriendSuggession

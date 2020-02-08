@@ -1,6 +1,6 @@
 import $ from "jquery";
 import { AJYPost } from '../../../scripts/AjuwayaRequests'
-
+import { TimeConverter } from '../../Functionalities'
 /*****************************************************************************
                     ALLOW USER TO TYPE AND REPLY MESSAGES
 *****************************************************************************/
@@ -64,22 +64,31 @@ import { AJYPost } from '../../../scripts/AjuwayaRequests'
                                         <div class="message sent">
                                         ${data.reply}
                                         <span class="metadata">
-                                            <span class="time">2:45pm</span>
+                                            <span class="time">${TimeConverter(data.time)}</span>
                                         </span>
                                     </div>
                                 `
 
                     $("#conversation-container").append(messages)
+
+                    /*****************************************************************************
+                                    UPDATE CONVERSATION LIST BLOCK
+                    *****************************************************************************/
+                        
+                        
+                    /*****************************************************************************
+                                    UPDATE CONVERSATION LIST BLOCK ENDS
+                    *****************************************************************************/
                             
                 })
 
                 $("#conversation-container").animate({
                     "scrollTop": $('#conversation-container')[0].scrollHeight
-                }, "slow");
-                $('#conversationReply').val('');
-                $('#conversationReply').focus();
+                }, "slow")
+                $('#conversationReply').val('')
+                $('#conversationReply').focus()
             }
-        });
+        })
     }
 
     

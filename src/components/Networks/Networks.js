@@ -72,19 +72,20 @@ export class Networks {
                     msgBox.addEventListener("click", getActiveMessage, false)
 
                     function getActiveMessage(e) {
-        
                         if (placeOwner.classList.contains("d-none"))
                         {
                             placeOwner.classList.remove("d-none")
                             placeHolder.parentNode.removeChild(placeHolder)
                         }
-                        var currentUser = result.friendsList.find(function (item) {
-                            var neededTarget = $(e.target).closest('#msgList')
+                        let currentUser = result.friendsList.find(function (item) {
+                            var neededTarget = $(e.target).closest('.msgList')
                             if (item.uid === neededTarget.attr('key'))
                             {
                                 return item
                             }
                         })
+
+                        console.log(currentUser)
         
                         if(currentUser){
                             /*****************************************************************************
@@ -146,6 +147,149 @@ export class Networks {
             })
 
         }
+
+    }
+
+    UserSearchForMessages = () => {
+        $('body').on("keyup", '#UserSearchForMessages', function() {
+
+            $('#conversation_list_box').hide()
+            $('#search_list_box').hide()
+            $('#search_list_result').html('').show()
+
+            var searchword = $(this).val();
+            if ($.trim(searchword).length > 2) {
+                const uid = $('#uid').val()
+                const token = $('#token').val()
+
+                const encodedata = {
+                    uid: uid,
+                    token: token,
+                    searchword: searchword
+                }
+
+                $.baseUrl = $('#BASE_URL').val()
+                let apiBaseUrl = $.baseUrl + 'Aapi/messageSearchFriend'
+
+                AJYPost(apiBaseUrl, encodedata).then((result) => {
+                    if (result.friendsList.length) {
+                        let ContactList = ''
+                        $.each(result.friendsList, (i, data) => {
+                            let notificationBudget = ''
+                            if(data.unreadMessageCount !== 0){
+                                notificationBudget = 'block'
+                            }else {
+                                notificationBudget = 'none'
+                            }
+
+                            const conversationsList = `
+                                    <div data-time="${data.time}" >
+                                    <div key="${ data.uid }" class="msgList row no-gutters flex-nowrap align-items-center p-1" style="position:relative">
+                                        <div>
+                                            <img src="${ data.profile_pic }" alt="${ data.username }" class="rounded">
+                                        </div>
+                                        <div class="py-1 pl-2 flex-grow-1" style="max-width:85%;">
+                                            <div class="row no-gutters flex-nowrap justify-content-between align-items-center">
+                                                <h6 class="mb-1 font-weight-bolder text-truncate" style="max-width:60%;">${ data.name }</h6>
+                                            </div>
+                                        </div> 
+                                    </div>
+                                    <hr class="my-3" >
+                                    </div>
+                            `
+                            ContactList += conversationsList
+                        })
+                        let msgBox = document.getElementById('search_list_result')
+                        msgBox.innerHTML = ContactList
+
+                        let msgColumn = document.getElementById("msgColumn")
+                        let chatColumn = document.getElementById("chatColumn")
+                        let returnBtn = document.querySelector("#chatColumn #return")
+                        let placeHolder = document.querySelector("#chatColumn .placeHolder")
+                        let placeOwner = document.querySelector("#chatColumn .placeOwner")
+                        let currentChatImage = document.querySelector("#chatHead img")
+                        let currentChatName = document.querySelector("#chatHead h6")
+
+                        /*****************************************************************************
+                        BLOCKED CLOSED: MAKE FUNCTIONAL METHODS RUNS ONLY WHEN PUBLIC USERNAME IS SET
+                        *****************************************************************************/
+
+                        msgBox.addEventListener("click", getActiveMessage, false)
+
+                        function getActiveMessage(e) {
+
+                            /*****************************************************************************
+                                                HIDE NOTIFICATION ICON ON CLICK
+                            *****************************************************************************/         
+
+                            if (placeOwner.classList.contains("d-none"))
+                            {
+                                placeOwner.classList.remove("d-none")
+                                placeHolder.parentNode.removeChild(placeHolder)
+                            }
+                            var currentUser = result.friendsList.find(function (item) {
+                                var neededTarget = $(e.target).closest('.msgList')
+                                if (item.uid === neededTarget.attr('key'))
+                                {
+                                    return item
+                                }
+                            })
+
+                        if(currentUser){
+                                /*****************************************************************************
+                                                    HIDE NOTIFICATION ICON ON CLICK
+                                *****************************************************************************/ 
+                            $('#updateConversation'+currentUser.uid ).hide()
+                                /*****************************************************************************
+                                                        THIS IS THE ONLY CODE I ADDED
+                                *****************************************************************************/
+                                //This block helps in changing URL for the user message view
+                                let page_url = $.baseUrl + 'message/' + currentUser.username
+                                window.history.pushState('', "Personal Message View", page_url)
+                                $('#public_username').val(currentUser.username)
+                                $('#conversationId').val(currentUser.c_id)
+                                $('#MessageUrlOnceChanged').val('true')
+
+                                /*****************************************************************************
+                                                    FUNCTIONAL METHODS INIT
+                                *****************************************************************************/
+                                if(currentUser.username !== ''){
+                                    ConversationReplies()
+                                    // Clear last seen before querying
+                                    $('#message_last_seen').html('')
+                                }
+                                /*****************************************************************************
+                                                        THIS IS THE ONLY CODE I ADDED
+                                *****************************************************************************/
+
+                                currentChatImage.setAttribute("src", currentUser.uid)
+                                currentChatName.textContent = currentUser.name.length > 20
+                                    ? currentUser.name.slice(0, 20) + "..."
+                                    : currentUser.name
+                                if (window.matchMedia("(max-width: 768px)").matches)
+                                {
+                                    msgColumn.classList.add("hide-sm-and-down")
+                                    chatColumn.classList.remove("hide-sm-and-down")
+                                }
+                            }
+                        }
+
+                        returnBtn.onclick = function () {
+                            msgColumn.classList.remove("hide-sm-and-down")
+                            chatColumn.classList.add("hide-sm-and-down")
+                            let page_url = $.baseUrl + 'message/'
+                            window.history.pushState('', "Back Conversation View", page_url)
+                        }
+
+                    }else {
+                        $('#search_list_result').html('')
+                    }
+                })
+            }else {
+                $('#search_list_box').show()
+                $('#search_list_result').hide()
+            }
+        })
 
     }
 

@@ -42,7 +42,7 @@
                     </div> -->
                     <div class="friendSearchBox p-2 d-none">
                         <div class="card" style="height: auto; padding: 10px">
-                            <input style="margin-top: 10px" class="form-control" placeholder="Search Friends..."
+                            <input style="margin-top: 10px" class="form-control" id="UserSearchForMessages" placeholder="Search Friends..."
                                 type="search" autofocus autocomplete="on">
                             <div class="displayUserFriendsList"></div>
                         </div>
@@ -54,6 +54,9 @@
                     <div id="msgBox">
                         <div id="conversation_list_box"></div>
                         <div id="search_list_box" style="display: none">Search Display</div>
+                        <div id="search_list_result" style="display: none">
+                            <button id="closeSearchResultBox">Close</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -67,7 +70,7 @@
                                 class="mdi mdi-arrow-left"></i></a>
                         <img src="../assets/img/pexels-photo-5.jpeg" alt="user image" class="rounded">
                         <div class="py-1 pl-3 flex-grow-1">
-                            <h6 class="my-0 font-weight-bolder" id="displayUserName"></h6>
+                            <h6 class="my-0 font-weight-bolder" id="visited_Name"></h6>
                             <p class="small my-0 text-muted">
                                 <small id="message_last_seen"></small>
                                 <small id="message_is_typing" style="display:none"></small>
