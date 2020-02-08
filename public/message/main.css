@@ -2,50 +2,6 @@
 
 /* } */
 
-.preview{
-    height: 50px;
-    width: 50px;
-    margin: 5px;
-}
-.notification-count {
-    position: absolute;
-    z-index: 1;
-    padding-left: 9px;
-    padding-bottom: px;
-    right: 0px;
-    top: 0px;
-    width: 24px;
-    height: 24px;
-    line-height: 24px;
-    font-size: 12px;
-    border-radius: 50%;
-    background-color: #196b69;
-    color: #fff;
-    animation: zoom 3s 3s both infinite;
-  }
-
-.MessageUploadPreview {
-	position: relative;
-	display: inline-block;
-}
-
-.MessageUploadPreview:hover .MessageUploadDelete {
-	display: block;
-}
-
-.MessageUploadDelete {
-	padding-top: 2px;	
-	padding-right: 2px;
-	position: absolute;
-	right: 0;
-	top: 0;
-	display: none;
-}
-
-.MessageUploadDelete a {
-	color: #000;
-}
-
 @media (max-width: 576px) {
     .hide-xs {
         display: none;
@@ -65,7 +21,7 @@
 }
 
 @media (min-width: 769px) {
-    .placeOwner, .message {
+    .placeOwner, #msgList {
         -webkit-animation: slide-down 0.3s linear;
         -o-animation: slide-down 0.3s linear;
         -moz-animation: slide-down 0.3s linear;
@@ -131,7 +87,7 @@
 
 #msgHead {
     background-color: rgba(160, 192, 190, 0.267);
-    box-shadow: 0px 11px 15px -7px rgba(0, 0, 0, 0.2), 0px 24px 38px 3px rgba(0, 0, 0, 0.14), 0px 9px 46px 8px rgba(0, 0, 0, 0.12);
+    box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
     border-radius: 10px;
 }
 
@@ -210,17 +166,17 @@
     max-height: calc(100vh - 105px);
 }
 
-#msgBox .msgList {
+#msgBox #msgList {
     background-color: rgba(237, 245, 244, 0.39);
     border-radius: 10px;
     height: 80px;
     transition: cubic-bezier(0.6, -0.28, 0.735, 0.045) 0.2s;
 }
 
-#msgBox .msgList:hover {
+#msgBox #msgList:hover {
     background-color: rgba(160, 192, 190, 0.267);
     cursor: default;
-    box-shadow: 0px 3px 3px -2px rgba(0, 0, 0, 0.2), 0px 3px 4px 0px rgba(0, 0, 0, 0.14), 0px 1px 8px 0px rgba(0, 0, 0, 0.12);
+    box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
 }
 
 #msgBox hr {
@@ -231,12 +187,12 @@
     border-radius: 10px;
     border: rgba(160, 192, 190, 0.267) solid 1px;
     background-color: white;
-    box-shadow: 0px 11px 15px -7px rgba(0, 0, 0, 0.2), 0px 24px 38px 3px rgba(0, 0, 0, 0.14), 0px 9px 46px 8px rgba(0, 0, 0, 0.12);
+    box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
 }
 
 #chatBox {
     background-color: rgba(160, 192, 190, 0.267);
-    min-height: 100%;
+    min-height: 100% !important;
 }
 
 #chatBox .conversation-container {
@@ -254,7 +210,6 @@
     overflow: hidden;
     height: 57px;
     width: 100%;
-    z-index: 2;
 }
 
 .inputBox div, .inputBox input {
