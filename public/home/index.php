@@ -6,10 +6,12 @@
     <meta name="theme-color" content="#000000" />
     <title>Ajuwaya Connect</title>
         <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"> -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css">
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css"> -->
+    <link rel="stylesheet" href="<?php echo BASE_URL ?>build/plugins/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="<?php echo BASE_URL ?>build/dist/mdb/css/bootstrap.min.css">
     <link rel="stylesheet" href="<?php echo BASE_URL ?>build/dist/mdb/css/mdb.min.css">
     <link rel="stylesheet" href="<?php echo BASE_URL ?>public/home/newsfeed.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL ?>public/nav_and_footer/nav_footer.css">
   </head>
   <body>
     <!-- <button><a href="<?php echo BASE_URL ?>message">Go to Messages</a></button>
@@ -17,7 +19,9 @@
     </div> -->
 
     <!-- State html here -->
-
+     <?php 
+include_once("public/nav_and_footer/nav.php");
+?>
 
     <div class="container-fluid py-4">
         <div class="row">
@@ -189,11 +193,14 @@
             <!-- RIGHT NAVIGATION AREA -->
 
         </div>
-
+    </div>
 
 
     <!-- Footer begins here -->
-    <footer ajuwaya-target="limit">
+         <?php 
+include_once("public/nav_and_footer/footer.php");
+?>
+    <div ajuwaya-target="limit">
         <!-- Please always remember to update the value of page name to the page name -->
         <input type="hidden" id="PAGE_NAME" value="home" />
         <!-- Page Name tag closed -->
@@ -205,13 +212,12 @@
         <input type="hidden" id="token" value="<?php echo $this->sessionToken; ?>"/>
         <input type="hidden" id="public_username" value="<?php echo $this->public_username; ?>" />
         <input type="hidden" id="conversationId" value="" />
-    </footer>
+    </div>
     
     <script src="<?php echo BASE_URL ?>build/app.bundle.js"></script>
     <script src="<?php echo BASE_URL ?>build/dist/mdb/js/jquery-3.4.1.min.js"></script>
     <script src="<?php echo BASE_URL ?>build/dist/mdb/js/bootstrap.min.js"></script>
     <script src="<?php echo BASE_URL ?>build/dist/mdb/js/mdb.min.js"></script>
     <script src="<?php echo BASE_URL ?>public/home/dummyNewsfeed.js"></script>
-</div>
   </body>
 </html>
