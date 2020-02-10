@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="<?php echo BASE_URL ?>build/dist/mdb/css/bootstrap.min.css">
     <link rel="stylesheet" href="<?php echo BASE_URL ?>build/dist/mdb/css/mdb.min.css">
     <link rel="stylesheet" href="<?php echo BASE_URL ?>public/message/main.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL ?>public/message/add.css">
   </head>
   <body>
 
@@ -97,7 +98,7 @@
                     </div>
 
                 
-                        <div class="" id="MessageUploadPreviewContainer" style="display:none;position: absolute;bottom: 0px;background: rgb(255, 255, 255,0.5);width: 100%; height:120px;">
+                        <div class="" id="MessageUploadPreviewContainer" style="display:none;position: absolute;bottom: 0px;background: rgb(255, 255, 255,0.5);width: 100%; height:120px;margin: 0px 10px;">
                              <!-- Uploading Images and Feed Media Form -->
                              <form id="imageform" method="post" enctype="multipart/form-data" action="<?php echo BASE_URL ?>Aapi/feedImageUpload">
                                 <div id="MessageUploadPreview"></div>
@@ -106,6 +107,7 @@
                                 </div>
                                 <div id="imageloadbutton" class="d-none">
                                     <input type="file" name="photos[]" id="photoimg" multiple="true" accept="image/*" />
+                                    <input type="file" name="photos[]" id="filesUploader" multiple="true" />
                                 </div>
                                 <div data-ajuwaya="message-params" class="d-none">
                                     <input type="hidden" id="uploadvalues"/>
@@ -116,7 +118,7 @@
                             </form>
                             <!-- Uploading Images and Feed Media Form CLOSED -->
                         </div>
-                        <div class="inputBox pb-2">
+                        <div class="inputBox pb-2" style="z-index: 1">
                             <div class="emoji" id="emoji-button">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" id="smiley" x="3147"
                                     y="3209">

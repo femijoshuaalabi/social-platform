@@ -53,10 +53,11 @@ export function ConversationLists() {
                                     <p class="mb-1 text-right mr-3 text-nowrap"><span class="small "><small id="conversationDateTime${ data.uid }">${TimeConverter(data.time) }</small></span></p>
                                     <span class="notification-count updateConversation${ data.c_id }"" id="updateConversation${ data.uid }" style="display:${notificationBudget}">${data.unreadMessageCount}</span>
                                 </div>
-                                <p class="small my-0 text-muted text-truncate pr-2 MessageLastReply${ data.uid }  MessageLastReply${ data.c_id }" id="MessageLastReply">
+                                <p class="small my-0 text-muted text-truncate pr-2 MessageLastReply${ data.uid }" id="MessageLastReply${ data.uid }">
                                 ${ data.lastReply.reply }
                                 </p>
                                 <p class="small my-0 text-muted text-truncate pr-2" id="LastReplyIsTyping" style="display:none; color: #196b69 !important"></div>
+                            <input type="hidden" id="rowCount" value="0" />
                             </div> 
                         </div>
                         <hr class="my-3" >

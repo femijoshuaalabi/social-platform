@@ -17,7 +17,27 @@ function imageUpload(){
        $('#photoimg').click()
     })
 
+    $('body').on('click','#file-upload', () => {
+        $('#filesUploader').click()
+     })
+
     $('body').on('change', '#photoimg', function() {
+        $('#MessageUploadPreviewContainer').fadeIn('slow')
+        $("#imageform").ajaxForm({
+            beforeSubmit: function() {
+                $("#imageloadstatus").show()
+            },
+            success: function(e) {
+                $("#imageloadstatus").hide()
+                $('#MessageUploadPreview').append(e)
+            },
+            error: function(e) {
+                $("#imageloadstatus").hide()
+            }
+        }).submit()
+    })
+
+    $('body').on('change', '#filesUploader', function() {
         $('#MessageUploadPreviewContainer').fadeIn('slow')
         $("#imageform").ajaxForm({
             beforeSubmit: function() {

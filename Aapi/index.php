@@ -169,7 +169,7 @@ function feedImageUpload() {
 
 
     try {
-        $uploadUid = $_POST['update_uid'];
+        $uploadUid = 1;
         $token = $_POST['update_token'];
         $upload_types = $_POST['upload_types'];
         $time = time();
@@ -178,7 +178,7 @@ function feedImageUpload() {
 
         if ($key == $token) {
             $upload_path = '../' . UPLOAD_PATH;
-            $valid_formats = array("jpg", "png", "gif", "bmp", "jpeg", "PNG", "JPG", "JPEG", "GIF", "BMP","mp4","3gp");
+            $valid_formats = array("jpg", "png", "gif", "bmp", "jpeg", "PNG", "JPG", "JPEG", "GIF", "BMP","mp4","3gp","mp3","pdf","sql");
             $group_id = $_POST['group_id'];
             $conversationImage = $_POST['conversationImage'];
             if (empty($group_id)) {
@@ -226,12 +226,31 @@ function feedImageUpload() {
                                     }
                                     $explode = explode('.', $actual_image_name);
                                     if($explode[1] == 'mp4'){
-                                        echo '<img src="' . BASE_URL . UPLOAD_PATH . $actual_image_name . '"  class="preview" style="display:none;" id="' . $v . '"/><video class="player preview" id="" poster="" playsinline controls>'.
-                                        '<source src="' . BASE_URL . UPLOAD_PATH . $actual_image_name . '" type="video/mp4" />'.
-                                        '</video>';
-                                    }else{
-                                        echo '<div class="MessageUploadPreview" id="MessageUploadPreview'.$v.'"><img src="' . BASE_URL . UPLOAD_PATH . $actual_image_name . '"  class="preview" id="' . $v . '"/><div class="MessageUploadDelete" id="photo' . $v . '"><a href="#"><i class="mdi mdi-delete"></i></a></div></div>';
-                                    }
+                                        echo '<div class="MessageUploadPreview image-area" id="MessageUploadPreview'.$v.'">' .
+                                                '<video class="media-content" id="" poster="" playsinline controls>'.
+                                                '<source src="' . BASE_URL . UPLOAD_PATH . $actual_image_name . '" type="video/mp4" />'.
+                                                '</video>'.
+                                                '<a class="remove-image MessageUploadDelete" id="photo' . $v . '" style="display: inline;">&#215;</a>' .
+                                            '</div>';
+                                    }elseif($explode[1] == 'mp3'){
+                                        echo '<div class="MessageUploadPreview image-area" id="MessageUploadPreview'.$v.'">' .
+                                               '<audio class="media-content" controls>' .
+                                                '<source src="' . BASE_URL . UPLOAD_PATH . $actual_image_name . '" type="audio/ogg">'.
+                                                '<source src="' . BASE_URL . UPLOAD_PATH . $actual_image_name . '" type="audio/mpeg">'.
+                                                '</audio>'.
+                                                '<a class="remove-image MessageUploadDelete" id="photo' . $v . '" style="display: inline;">&#215;</a>' .
+                                            '</div>';
+                                    }elseif($explode[1] == 'jpg' || $explode[1] == 'png'){
+                                        echo '<div class="MessageUploadPreview image-area" id="MessageUploadPreview'.$v.'">' .
+                                                '<img class="media-content" src="' . BASE_URL . UPLOAD_PATH . $actual_image_name . '"  alt="'.$actual_image_name.'" id="' . $v . '" />' .
+                                                '<a class="remove-image MessageUploadDelete" id="photo' . $v . '" style="display: inline;">&#215;</a>' .
+                                            '</div>';
+                                   }else {
+                                    echo '<div class="MessageUploadPreview image-area" id="MessageUploadPreview'.$v.'">' .
+                                            '<div class="media-content"><p>File Uploaded</p></div>'.
+                                            '<a class="remove-image MessageUploadDelete" id="photo' . $v . '" style="display: inline;">&#215;</a>' .
+                                        '</div>';
+                                   }
                                 }
                             }
                             else {

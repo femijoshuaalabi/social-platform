@@ -84,8 +84,6 @@ export class Networks {
                                 return item
                             }
                         })
-
-                        console.log(currentUser)
         
                         if(currentUser){
                             /*****************************************************************************

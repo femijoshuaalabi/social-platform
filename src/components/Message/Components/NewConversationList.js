@@ -26,16 +26,18 @@ export function NewConversationList() {
                 /*****************************************************************************
                                 CHECK IF THERE'S NEW MESSAGES NOTIFICATION
                 *****************************************************************************/
-                if(data.unreadMessageCount > 0 ) {
+                if(data.unreadMessageCount > 0 && $("#rowCount").val() < data.unreadMessageCount) {
                     $("#conversationsList"+data.uid).attr('data-time', data.time)
                     $("#updateConversation" +data.uid).show().html(data.unreadMessageCount)
-                    $(".MessageLastReply" +data.uid).html(data.lastReply.reply) 
+                    $("#MessageLastReply" +data.uid).html(data.lastReply.reply) 
                     $("#conversationDateTime" +data.uid).html(TimeConverter(data.time))
+                    $("#rowCount").val(data.unreadMessageCount)
 
                     let conversationsList = $(".orderMessages")
                     conversationsList.sort(function(a, b){ return $(b).data("time") - $(a).data("time") })
 
                     $("#conversation_list_box").html(conversationsList)
+                    console.log('what')
                 }
             })
         }

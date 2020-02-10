@@ -21,7 +21,7 @@
 }
 
 @media (min-width: 769px) {
-    .placeOwner, #msgList {
+    .placeOwner, .msgList {
         -webkit-animation: slide-down 0.3s linear;
         -o-animation: slide-down 0.3s linear;
         -moz-animation: slide-down 0.3s linear;
@@ -166,14 +166,14 @@
     max-height: calc(100vh - 105px);
 }
 
-#msgBox #msgList {
+#msgBox .msgList {
     background-color: rgba(237, 245, 244, 0.39);
     border-radius: 10px;
     height: 80px;
     transition: cubic-bezier(0.6, -0.28, 0.735, 0.045) 0.2s;
 }
 
-#msgBox #msgList:hover {
+#msgBox .msgList:hover {
     background-color: rgba(160, 192, 190, 0.267);
     cursor: default;
     box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);

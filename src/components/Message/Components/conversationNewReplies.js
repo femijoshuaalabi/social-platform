@@ -56,13 +56,14 @@ function NewReplies() {
                                 </span>
                             </div>
                         `
+
+                    $("#conversation-container").append(messages)
+                    $("#conversation-container").animate({
+                        "scrollTop": $('#conversation-container')[0].scrollHeight
+                    }, "fast")
                     }
                     
                 }
-                $("#conversation-container").append(messages)
-                $("#conversation-container").animate({
-                    "scrollTop": $('#conversation-container')[0].scrollHeight
-                }, "slow")
             })
         }
     })
