@@ -93,7 +93,7 @@
 
                 <!-- CHAT BOX -->
                 <div id="chatBox" class="row no-gutters flex-column">
-                    <div class="conversation-container flex-grow-1" id="conversation-container">
+                    <div class="conversation-container flex-grow-1" style="display:grid" id="conversation-container">
                         
                     </div>
 

@@ -1,6 +1,6 @@
 import $ from "jquery";
 import { AJYPost } from '../../../scripts/AjuwayaRequests'
-import { TimeConverter } from '../../Functionalities'
+import { MessageTimeConverter } from '../../Functionalities'
 import EmojiButton from '@joeattardi/emoji-button';
 
 export function ConversationReplies() {
@@ -50,6 +50,7 @@ export function ConversationReplies() {
 
     AJYPost(apiBaseUrl,encodedata).then((result) => {
         if (result.conversationReplies.length) {
+
             /*****************************************************************************
                             THIS BLOCK HERE IS TO UPDATE HTML TAGS
             *****************************************************************************/
@@ -60,112 +61,120 @@ export function ConversationReplies() {
             /*****************************************************************************
                                             BLOCK CLOSED
             *****************************************************************************/
-            
-            $.each(result.conversationReplies, (i, data) => {
-                /*****************************************************************************
-                                    CHECK IF MEDIA AVAILABLE
-                *****************************************************************************/
-               /*upload */
-               var uploadImageHTML = '';
-               var C = '';
-               if (data.uploadPaths) {
-                   if (data.uploadPaths.length > 1) {
-                       for (var i = 0; i < data.uploadPaths.length; i++) {
-                           C = '<a href="' + data.uploadPaths[i] + '" data-lightbox="lightbox' + data.msg_id + '" style="display:block;width:100%; max-width:300px; max-height:300px;"><img src="' + data.uploadPaths[i] + '" class="conversationPreview" style="max-width: 200px !important;" id="' + data.msg_id + '" rel="' + data.msg_id + '"/></a>';
-                           uploadImageHTML += C;
-                       }
-                   } else {
 
-                    let uploads = data.uploadPaths[0];
-                    let ext = uploads.split('.');
-
-                    let video_array = ['mp4','ogg']
-                    let image_array = ['jpg','gif','png']
-                    let audio_array = ['mp3','wav']
-
-                    /*****************************************************************************
-                                        VIDEO PLAYER: NB... WOKRING ON IT
-                    *****************************************************************************/
-
-                    if (video_array.includes(ext[ext.length - 1])) {
-                        uploadImageHTML = `
-                                            <video width="100%" playsinline controls>
-                                                <source src="${uploads}" type="video/mp4">
-                                                <source src="${uploads}" type="video/ogg">
-                                            </video>
-                                            `
-                    }else if (audio_array.includes(ext[ext.length - 1])) {
-
-                     /*****************************************************************************
-                                        Audio PLAYER: NB... WOKRING ON IT
-                    *****************************************************************************/
-
-                        
-                        uploadImageHTML =      `
-                                        <audio controls>
-                                            <source src="${uploads}" type="audio/ogg">
-                                            <source src="${uploads}" type="audio/mpeg">
-                                        </audio>
-                            `
-                    }else if (image_array.includes(ext[ext.length - 1])) {
-
-                     /*****************************************************************************
-                                        IMAGE: NB... WOKRING ON IT
-                    *****************************************************************************/
-                   
-                        if(ext[ext.length - 1] == 'gif'){
-                            // Apply Gif Extention
-                        }else {
-                            uploadImageHTML = '<img src="' + uploads + '" class="conversationPreview" style="margin-bottom: 10px; max-width: 100% !important;" id="' + data.msg_id + '" rel="' + data.msg_id + '"/>'
-                        }
-                   } else {
-                         /*****************************************************************************
-                                            FILES: NB... WOKRING ON IT
+              let getMessages = groupMessagesByDate(result.conversationReplies, 'time');
+              Object.keys(getMessages)
+                .forEach((key, index) => {
+                    let ChatedDate = `<div style="text-align: center">${key}</div>`
+                    $("#conversation-container").append(`<div id="chat${index}">${ChatedDate}</div>`)
+                    getMessages[key].forEach((data) => {
+                        /*****************************************************************************
+                                            CHECK IF MEDIA AVAILABLE
                         *****************************************************************************/
-                       uploadImageHTML =      `
-                                <a href="${uploads}" class="download_button">
-                                    <div class="downloadicon">
-                                    <div class="cloud"><div class="arrowdown"></div></div>
-                                    </div>
-                                    <div class="filename"><span class="value">File</span></div>
-                                    <div class="filesize">Size : <span class="value">19 MB</span></div>
-                                </a>
-                            `
-                   }
-                        
-                   }
-               }
+                        /*upload */
+                        var uploadImageHTML = '';
+                        var C = '';
+                        if (data.uploadPaths) {
+                            if (data.uploadPaths.length > 1) {
+                                for (var i = 0; i < data.uploadPaths.length; i++) {
+                                    C = '<a href="' + data.uploadPaths[i] + '" data-lightbox="lightbox' + data.msg_id + '" style="display:block;width:100%; max-width:300px; max-height:300px;"><img src="' + data.uploadPaths[i] + '" class="conversationPreview" style="max-width: 200px !important;" id="' + data.msg_id + '" rel="' + data.msg_id + '"/></a>';
+                                    uploadImageHTML += C;
+                                }
+                            } else {
 
-                let messages = ''
-                if (data.username) {
-                    if (data.username == username) {
-                        messages = `
-                               <div class="message sent">
-                               <div style="width: 100%">${uploadImageHTML}</div>
-                                ${data.reply}
-                                <span class="metadata">
-                                    <span class="time">${TimeConverter(data.time)}</span>
-                                </span>
-                            </div>
-                        `
-                    } else {
-                        messages = `
-                            <div class="message received">
-                            <div style="width: 100%">${uploadImageHTML}</div>
-                            ${data.reply}
-                                <span class="metadata">
-                                    <span class="time">${TimeConverter(data.time)}</span>
-                                </span>
-                            </div>
-                        `
-                    }
-                    
-                }
-                $("#conversation-container").append(messages)
-                $("#conversation-container").animate({
-                    "scrollTop": $('#conversation-container')[0].scrollHeight
-                }, "fast");
-            })
+                                let uploads = data.uploadPaths[0];
+                                let ext = uploads.split('.');
+
+                                let video_array = ['mp4','ogg']
+                                let image_array = ['jpg','gif','png']
+                                let audio_array = ['mp3','wav']
+
+                                /*****************************************************************************
+                                                    VIDEO PLAYER: NB... WOKRING ON IT
+                                *****************************************************************************/
+
+                                if (video_array.includes(ext[ext.length - 1])) {
+                                    uploadImageHTML = `
+                                                        <video width="100%" playsinline controls>
+                                                            <source src="${uploads}" type="video/mp4">
+                                                            <source src="${uploads}" type="video/ogg">
+                                                        </video>
+                                                        `
+                                }else if (audio_array.includes(ext[ext.length - 1])) {
+
+                                /*****************************************************************************
+                                                    Audio PLAYER: NB... WOKRING ON IT
+                                *****************************************************************************/
+
+                                    
+                                    uploadImageHTML =      `
+                                                    <audio controls>
+                                                        <source src="${uploads}" type="audio/ogg">
+                                                        <source src="${uploads}" type="audio/mpeg">
+                                                    </audio>
+                                        `
+                                }else if (image_array.includes(ext[ext.length - 1])) {
+
+                                /*****************************************************************************
+                                                    IMAGE: NB... WOKRING ON IT
+                                *****************************************************************************/
+                            
+                                    if(ext[ext.length - 1] == 'gif'){
+                                        // Apply Gif Extention
+                                    }else {
+                                        uploadImageHTML = '<img src="' + uploads + '" class="conversationPreview" style="margin-bottom: 10px; max-width: 100% !important;" id="' + data.msg_id + '" rel="' + data.msg_id + '"/>'
+                                    }
+                            } else {
+                                    /*****************************************************************************
+                                                        FILES: NB... WOKRING ON IT
+                                    *****************************************************************************/
+                                uploadImageHTML =      `
+                                            <a href="${uploads}" class="download_button">
+                                                <div class="downloadicon">
+                                                <div class="cloud"><div class="arrowdown"></div></div>
+                                                </div>
+                                                <div class="filename"><span class="value">File</span></div>
+                                                <div class="filesize">Size : <span class="value">19 MB</span></div>
+                                            </a>
+                                        `
+                            }
+                                    
+                            }
+                        }
+
+                            let messages = ''
+                            if (data.username) {
+                                if (data.username == username) {
+                                    messages = `
+                                        <div class="message sent">
+                                        <div style="width: 100%">${uploadImageHTML}</div>
+                                            ${data.reply}
+                                            <span class="metadata">
+                                                <span class="time">${MessageTimeConverter(data.time)}</span>
+                                            </span>
+                                        </div>
+                                    `
+                                } else {
+                                    messages = `
+                                        <div class="message received">
+                                        <div style="width: 100%">${uploadImageHTML}</div>
+                                        ${data.reply}
+                                            <span class="metadata">
+                                                <span class="time">${MessageTimeConverter(data.time)}</span>
+                                            </span>
+                                        </div>
+                                    `
+                                }
+                                
+                            }
+                            $("#chat" + index).append(messages)
+                            
+                            $("#conversation-container").animate({
+                                "scrollTop": $('#conversation-container')[0].scrollHeight
+                            }, "fast")
+                            
+                    })
+                })
         }
     })
 
@@ -185,4 +194,38 @@ export function ConversationReplies() {
       picker.pickerVisible ? picker.hidePicker() : picker.showPicker(button);
     });
 
+}
+
+
+
+
+/*****************************************************************************
+                        GROUP MESSAGES BY DATE
+*****************************************************************************/
+let groupMessagesByDate = (obj, timestamp) => {
+    var objPeriod = {};
+    var oneDay = 24 * 60 * 60 * 1000; // hours * minutes * seconds * milliseconds
+    for (var i = 0; i < obj.length; i++) {
+      var a = new Date(obj[i][timestamp] * 1000);
+      let today = new Date();
+      let yesterday = new Date(Date.now() - 86400000);
+      let d = ''
+      let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      let year = a.getFullYear();
+      let month = months[a.getMonth()];
+      let date = a.getDate();
+      if (a.setHours(0,0,0,0) == today.setHours(0,0,0,0))
+          d =  'Today'
+      else if (a.setHours(0,0,0,0) == yesterday.setHours(0,0,0,0))
+          d =  'Yesterday'
+      else if (year == today.getFullYear())
+          d =  date + ' ' + month;
+      else
+          d =  date + ' ' + month;
+
+      // define object key
+      objPeriod[d] = objPeriod[d] || [];
+      objPeriod[d].push(obj[i]);
+    }
+    return objPeriod;
 }
